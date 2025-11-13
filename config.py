@@ -1,8 +1,19 @@
 import os
 
-BOT_TOKEN = "7246776423:AAGEwo5wyIXNJtLly84cFCQKT4gyH6juhHg"  # Замените на ваш токен
+# Токен бота от @BotFather
+BOT_TOKEN = (
+    "7246776423:AAGEwo5wyIXNJtLly84cFCQKT4gyH6juhHg"  # Замените на реальный токен!
+)
 
-# Настройки веб-сервера для статики
+# Доменное имя
+DOMAIN = "sota.german-service.site"
+
+# Настройки веб-сервера (если нужно)
 WEB_HOST = "0.0.0.0"
 WEB_PORT = 8080
-WEBHOOK_URL = None  # Для поллинга оставьте None
+
+# Настройки для продакшена
+DEBUG = False
+
+# Администраторы
+ADMIN_IDS = [872108388]  # Ваш Telegram ID
