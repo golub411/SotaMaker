@@ -537,6 +537,7 @@ body::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   gap: 10.25vw;
+  margin-bottom: 50px;
 }
 
 .bottom-main:not(:first-child) {
