@@ -229,6 +229,22 @@
     <script src="js/store.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Ждем полной инициализации Telegram Web App
+        if (window.Telegram && window.Telegram.WebApp) {
+          const tg = window.Telegram.WebApp;
+
+          // Инициализируем приложение
+          tg.ready(); // Сообщаем Telegram, что приложение готово
+          tg.expand();
+          tg.disableVerticalSwipes();
+          tg.setHeaderColor("#FBC717");
+          tg.setBackgroundColor("#FBC717"); // Дополнительно можно установить цвет фона
+
+          console.log("Telegram Web App инициализирован");
+        } else {
+          console.error("Telegram Web App не найден");
+        }
+
         // Функционал для выбора типа бота
         const botTypes = document.querySelectorAll(".bot-type");
         let selectedBotType = "stars";
