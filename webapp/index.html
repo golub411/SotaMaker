@@ -53,11 +53,11 @@
         <div class="top-content">
           <div class="header">
             <div class="logo-conteiner">
-              <img class="bee" src="static/images/beesota.png" alt="" />
+              <img class="bee" src="static/images/bee.svg" alt="" />
               <span>SotaMaker</span>
               <div class="version">
                 <span>2.0</span>
-                <img src="static/images/beesota.png" alt="" />
+                <img src="static/images/bee.svg" alt="" />
               </div>
             </div>
             <p class="main-desc">
@@ -175,48 +175,207 @@
             </div>
           </div>
 
-          <div class="bottom-main" data-active-content="stars">
-            <h1>
-              <span class="bot-content content-stars"
-                >Игровой звездный-бот</span
-              >
-              <span class="bot-content content-movies">Кино-бот</span>
-              <span class="bot-content content-shops">Магазин-бот</span>
-              <span class="bot-content content-games">Игровой бот</span>
-            </h1>
-            <p>
-              <span class="bot-content content-stars">
+          <!-- Шаблоны для категории Звёзды и NFT -->
+          <div class="templates-container" data-category="stars">
+            <!-- <div class="template-selector"> -->
+            <!-- <div class="template-tabs">
+                <div class="template-tab active" data-template="stars-default">
+                  <span>Базовый шаблон</span>
+                </div>
+              </div> -->
+            <!-- </div> -->
+
+            <div class="bottom-main active" data-template="stars-default">
+              <h1>
+                <span>Игровой звездный-бот</span>
+              </h1>
+              <p>
                 Азартный бот со звёдами и вращениями. Встроена
                 <strong>реклама</strong>, минимальный вывод – весь
                 <strong>профит идет владельцу.</strong>
-              </span>
-              <span class="bot-content content-movies">
+              </p>
+              <div class="form">
+                <input
+                  placeholder="Введите токен из бота @BotFather"
+                  type="text"
+                />
+                <div class="buttons">
+                  <div class="button create">
+                    <span>Создать</span>
+                  </div>
+                  <div class="button demo">
+                    <span> Демо-доступ </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Шаблоны для категории Кино и Фильмы -->
+          <div class="templates-container" data-category="movies">
+            <!-- <div class="template-selector"> -->
+            <!-- <div class="template-tabs">
+                <div class="template-tab active" data-template="movies-cinema">
+                  <span>Кино-бот</span>
+                </div>
+                <div class="template-tab" data-template="movies-reviews">
+                  <span>Кино-критик</span>
+                </div>
+                <div
+                  class="template-tab"
+                  data-template="movies-recommendations"
+                >
+                  <span>Кино-рекомендатор</span>
+                </div>
+              </div> -->
+            <!-- </div> -->
+
+            <!-- Шаблон 1: Кино-бот -->
+            <div class="bottom-main active" data-template="movies-cinema">
+              <h1>
+                <span>Кино-бот</span>
+              </h1>
+              <p>
                 Бот для кино и фильмов с рекомендациями и рецензиями.
                 <strong>Автоматическая публикация</strong> новостей и
                 <strong>интерактивный поиск</strong> фильмов.
-              </span>
-              <span class="bot-content content-shops">
+              </p>
+              <div class="form">
+                <input
+                  placeholder="Введите токен из бота @BotFather"
+                  type="text"
+                />
+                <div class="buttons">
+                  <div class="button create">
+                    <span>Создать</span>
+                  </div>
+                  <div class="button demo">
+                    <span> Демо-доступ </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Шаблон 2: Кино-критик -->
+            <div class="bottom-main" data-template="movies-reviews">
+              <h1>
+                <span>Кино-критик</span>
+              </h1>
+              <p>
+                Бот для обсуждения фильмов с системой рецензий и оценок.
+                <strong>Сообщество критиков</strong> и
+                <strong>рейтинговая система</strong>.
+              </p>
+              <div class="form">
+                <input
+                  placeholder="Введите токен из бота @BotFather"
+                  type="text"
+                />
+                <div class="buttons">
+                  <div class="button create">
+                    <span>Создать</span>
+                  </div>
+                  <div class="button demo">
+                    <span> Демо-доступ </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Шаблон 3: Кино-рекомендатор -->
+            <div class="bottom-main" data-template="movies-recommendations">
+              <h1>
+                <span>Кино-рекомендатор</span>
+              </h1>
+              <p>
+                Умный бот с рекомендациями на основе предпочтений.
+                <strong>AI-подбор</strong> фильмов и
+                <strong>персонализированные подборки</strong>.
+              </p>
+              <div class="form">
+                <input
+                  placeholder="Введите токен из бота @BotFather"
+                  type="text"
+                />
+                <div class="buttons">
+                  <div class="button create">
+                    <span>Создать</span>
+                  </div>
+                  <div class="button demo">
+                    <span> Демо-доступ </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Шаблоны для категории Магазины -->
+          <div class="templates-container" data-category="shops">
+            <!-- <div class="template-selector">
+              <div class="template-tabs">
+                <div class="template-tab active" data-template="shops-default">
+                  <span>Базовый шаблон</span>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="bottom-main active" data-template="shops-default">
+              <h1>
+                <span>Магазин-бот</span>
+              </h1>
+              <p>
                 Торговый бот для онлайн-магазинов. Поддержка
                 <strong>множественных платежных систем</strong> и
                 <strong>автоматизация заказов</strong>.
-              </span>
-              <span class="bot-content content-games">
+              </p>
+              <div class="form">
+                <input
+                  placeholder="Введите токен из бота @BotFather"
+                  type="text"
+                />
+                <div class="buttons">
+                  <div class="button create">
+                    <span>Создать</span>
+                  </div>
+                  <div class="button demo">
+                    <span> Демо-доступ </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Шаблоны для категории Игровые -->
+          <div class="templates-container" data-category="games">
+            <!-- <div class="template-selector"> -->
+            <!-- <div class="template-tabs">
+                <div class="template-tab active" data-template="games-default">
+                  <span>Базовый шаблон</span>
+                </div>
+              </div> -->
+            <!-- </div> -->
+
+            <div class="bottom-main active" data-template="games-default">
+              <h1>
+                <span>Игровой бот</span>
+              </h1>
+              <p>
                 Игровой бот с системой достижений и рейтингов.
                 <strong>Мультиплеерные игры</strong> и
                 <strong>виртуальная экономика</strong>.
-              </span>
-            </p>
-            <div class="form">
-              <input
-                placeholder="Введите токен из бота @BotFather"
-                type="text"
-              />
-              <div class="buttons">
-                <div class="button create">
-                  <span>Создать</span>
-                </div>
-                <div class="button demo">
-                  <span> Демо-доступ </span>
+              </p>
+              <div class="form">
+                <input
+                  placeholder="Введите токен из бота @BotFather"
+                  type="text"
+                />
+                <div class="buttons">
+                  <div class="button create">
+                    <span>Создать</span>
+                  </div>
+                  <div class="button demo">
+                    <span> Демо-доступ </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -290,19 +449,63 @@
           // Обновляем data-атрибут на body и элементах с контентом
           document.body.setAttribute("data-bot-type", selectedBotType);
           document
-            .querySelector(".bottom-main")
-            .setAttribute("data-active-content", selectedBotType);
-          document
             .querySelector(".category-content")
             .setAttribute("data-active-content", selectedBotType);
           document
             .querySelector(".category-icon")
             .setAttribute("data-active-content", selectedBotType);
 
+          // Показываем только активную категорию шаблонов
+          document
+            .querySelectorAll(".templates-container")
+            .forEach((container) => {
+              if (container.getAttribute("data-category") === selectedBotType) {
+                container.style.display = "block";
+              } else {
+                container.style.display = "none";
+              }
+            });
+
           if (typeof store !== "undefined") {
             store.state.selectedBotType = selectedBotType;
           }
           console.log("Выбран тип бота:", selectedBotType);
+        }
+
+        // Функционал для переключения шаблонов
+        function initTemplateSwitcher() {
+          document.querySelectorAll(".template-tab").forEach((tab) => {
+            tab.addEventListener("click", function () {
+              const templateContainer = this.closest(".templates-container");
+              const templateId = this.getAttribute("data-template");
+
+              // Убираем активный класс у всех вкладок
+              templateContainer
+                .querySelectorAll(".template-tab")
+                .forEach((t) => {
+                  t.classList.remove("active");
+                });
+
+              // Добавляем активный класс текущей вкладке
+              this.classList.add("active");
+
+              // Скрываем все шаблоны и показываем только выбранный
+              templateContainer
+                .querySelectorAll(".bottom-main")
+                .forEach((template) => {
+                  template.classList.remove("active");
+                });
+
+              const activeTemplate = templateContainer.querySelector(
+                `.bottom-main[data-template="${templateId}"]`
+              );
+              if (activeTemplate) {
+                activeTemplate.classList.add("active");
+              }
+
+              console.log("Выбран шаблон:", templateId);
+            });
+          });
         }
 
         botTypes.forEach((type) => {
@@ -314,6 +517,7 @@
         });
 
         updateActiveState(selectedBotType);
+        initTemplateSwitcher();
 
         if (typeof store !== "undefined") {
           if (store.state.selectedBotType) {
@@ -439,11 +643,15 @@
 
         // Функция создания бота с обработкой загрузки
         async function handleCreateBot() {
-          const tokenInput = document.querySelector('.form input[type="text"]');
-          const createButton = document.querySelector(".button.create");
+          const activeTemplate = document.querySelector(".bottom-main.active");
+          const tokenInput = activeTemplate.querySelector(
+            '.form input[type="text"]'
+          );
+          const createButton = activeTemplate.querySelector(".button.create");
           const token = tokenInput.value.trim();
 
           const selectedBotType = document.body.getAttribute("data-bot-type");
+          const selectedTemplate = activeTemplate.getAttribute("data-template");
 
           if (!token) {
             if (tg) {
@@ -463,7 +671,8 @@
 
             const payload = {
               token: token,
-              template: selectedBotType,
+              category: selectedBotType,
+              template: selectedTemplate,
               initData: tg ? tg.initData : null,
             };
 
@@ -493,11 +702,12 @@
           }
         }
 
-        // Добавляем обработчик на кнопку "Создать"
-        const createButton = document.querySelector(".button.create");
-        if (createButton) {
-          createButton.addEventListener("click", handleCreateBot);
-        }
+        // Добавляем обработчик на кнопку "Создать" для всех активных шаблонов
+        document
+          .querySelectorAll(".bottom-main.active .button.create")
+          .forEach((button) => {
+            button.addEventListener("click", handleCreateBot);
+          });
       });
     </script>
   </body>

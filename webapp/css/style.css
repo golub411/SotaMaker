@@ -452,7 +452,7 @@ body::-webkit-scrollbar {
 
 .bottom-block {
   width: 100%;
-  height: 121.2vw;
+  /* height: 121.2vw; */
   margin-top: 12.56vw;
   background-color: var(--bg-bottom-block);
   border-top-left-radius: 6.4vw;
@@ -534,10 +534,17 @@ body::-webkit-scrollbar {
 }
 
 .bottom-main {
-  margin-top: 7.69vw;
   display: flex;
   flex-direction: column;
   gap: 10.25vw;
+}
+
+.bottom-main:not(:first-child) {
+  margin-top: 15vw; /* Ваше большее значение */
+}
+
+.bottom-main:first-child {
+  margin-top: 7.69vw; /* Значение для первого элемента */
 }
 
 .bottom-main > h1 {
@@ -962,7 +969,7 @@ body::-webkit-scrollbar {
   }
 
   .bottom-block {
-    height: 472.68px; /* 121.2vw * 3.9 */
+    /*height: 472.68px;  121.2vw * 3.9 */
     margin-top: 48.98px; /* 12.56vw * 3.9 */
     border-top-left-radius: 24.96px; /* 6.4vw * 3.9 */
     border-top-right-radius: 24.96px; /* 6.4vw * 3.9 */
@@ -970,8 +977,15 @@ body::-webkit-scrollbar {
   }
 
   .bottom-main {
-    margin-top: 29.99px; /* 7.69vw * 3.9 */
     gap: 39.98px; /* 10.25vw * 3.9 */
+  }
+
+  .bottom-main:not(:first-child) {
+    margin-top: 60px; /* Ваше большее значение */
+  }
+
+  .bottom-main:first-child {
+    margin-top: 29.99px; /* Значение для первого элемента */
   }
 
   .bottom-main > h1 {

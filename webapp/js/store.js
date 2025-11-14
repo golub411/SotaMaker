@@ -10,6 +10,12 @@ class Store {
             theme: 'light',
             counter: 0,
             selectedBotType: 'stars',
+            selectedTemplates: {
+                stars: 'stars-default',
+                movies: 'movies-cinema',
+                shops: 'shops-default',
+                games: 'games-default'
+            },
             user: {
                 name: 'Иван Иванов',
                 email: 'ivan@example.com',
@@ -90,6 +96,8 @@ class Store {
         const stateToSave = {
             theme: this.state.theme,
             counter: this.state.counter,
+            selectedBotType: this.state.selectedBotType,
+            selectedTemplates: { ...this.state.selectedTemplates },
             user: { ...this.state.user },
             settings: { ...this.state.settings }
         };
@@ -115,6 +123,17 @@ class Store {
         if (themeButton) {
             themeButton.textContent = this.state.theme === 'light' ? '🌙 Тёмная тема' : '☀️ Светлая тема';
         }
+    }
+
+    // Методы для работы с шаблонами
+    setTemplate(category, template) {
+        if (this.state.selectedTemplates[category]) {
+            this.state.selectedTemplates[category] = template;
+        }
+    }
+
+    getCurrentTemplate(category) {
+        return this.state.selectedTemplates[category] || 'default';
     }
 
     // Методы для счётчика
@@ -209,7 +228,6 @@ document.addEventListener('change', function(e) {
         current[lastKey] = target.value;
     }
 });
-
 
 const themeSwitch = document.getElementById('themeSwitch');
 

@@ -6,6 +6,7 @@ tg.expand();
 tg.disableVerticalSwipes();
 tg.setHeaderColor('#FBC717');
 
+
 // Функция создания бота
 async function createBot(payload) {
     const response = await fetch("/api/create_bot", {
@@ -92,3 +93,5 @@ document.addEventListener('DOMContentLoaded', function() {
         createButton.addEventListener('click', handleCreateBot);
     }
 });
+
+     
