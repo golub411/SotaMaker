@@ -3,38 +3,363 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telegram Mini App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <title>SotaMaker 2.0</title>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1>🤖 Моё Mini App</h1>
-        <p>Простое мини-приложение для бота</p>
-      </div>
+  <body data-bot-type="stars">
+    <div class="layout">
+      <div class="container">
+        <img class="bg-image light-bg" src="static/images/sots.png" alt="" />
+        <img class="bg-image dark-bg" src="static/images/darksots.png" alt="" />
 
-      <div class="user-card">
-        <h3>👤 Данные пользователя:</h3>
-        <div id="user-data">Загрузка...</div>
-      </div>
+        <!-- 🔝 HEADER -->
+        <div class="theme-switch" id="themeSwitch">
+          <div class="switch-circle">
+            <svg
+              class="icon sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="5" fill="white" />
+              <g stroke="white" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="4" />
+                <line x1="12" y1="20" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="4" y2="12" />
+                <line x1="20" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
+              </g>
+            </svg>
+            <svg
+              class="icon moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="black"
+                stroke-width="2"
+                d="M21 12.79A9 9 0 0111.21 3 7 7 0 1012 21a9 9 0 009-8.21z"
+              />
+            </svg>
+          </div>
+        </div>
 
-      <div class="actions">
-        <button class="btn primary" onclick="sendMessage()">
-          📨 Отправить сообщение
-        </button>
-        <button class="btn" onclick="showAlert()">ℹ️ Показать alert</button>
-        <button class="btn secondary" onclick="closeApp()">
-          ❌ Закрыть приложение
-        </button>
-      </div>
+        <div class="top-content">
+          <div class="header">
+            <div class="logo-conteiner">
+              <img class="bee" src="static/images/beesota.png" alt="" />
+              <span>SotaMaker</span>
+              <div class="version">
+                <span>2.0</span>
+                <img src="static/images/beesota.png" alt="" />
+              </div>
+            </div>
+            <p class="main-desc">
+              Создай <span class="low-opacity">своего</span> бота и
+              <span class="low-opacity">начни</span><br />
+              зарабатывать <span class="low-opacity">уже</span> сегодня
+            </p>
+          </div>
 
-      <div class="debug">
-        <h4>🐛 Debug информация:</h4>
-        <div id="debug-data"></div>
+          <!-- 🧩 ВЫБОР ТИПА БОТА -->
+          <div class="bot-type-block">
+            <span class="choose">Выберите тип бота:</span>
+            <div class="bot-types">
+              <div class="bot-type active" data-bot-type="stars">
+                <img class="emoji" src="static/emoji/star.png" alt="" />
+                <span> Звёзды и NFT️ </span>
+              </div>
+              <div class="bot-type" data-bot-type="movies">
+                <img class="emoji" src="static/emoji/cinema.png" alt="" />
+                <span>Кино и Фильмы</span>
+              </div>
+              <div class="bot-type disabled" data-bot-type="shops">
+                <img class="emoji" src="static/emoji/basket.png" alt="" />
+                <span>Магазины</span>
+                <img class="soon" src="static/UI/soon.png" alt="" />
+              </div>
+              <div class="bot-type disabled" data-bot-type="games">
+                <img class="emoji" src="static/emoji/dolor.png" alt="" />
+                <span>Игровые</span>
+                <img class="soon" src="static/UI/soon.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-block">
+          <div class="category-intgr">
+            <div class="category">
+              <div class="category-icon" data-active-content="stars">
+                <div class="bot-content content-stars">
+                  <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                </div>
+                <div class="bot-content content-movies">
+                  <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                </div>
+                <div class="bot-content content-shops">
+                  <img src="static/UI/staricon.png" alt="Магазины" />
+                </div>
+                <div class="bot-content content-games">
+                  <img src="static/UI/staricon.png" alt="Игровые" />
+                </div>
+              </div>
+              <div class="category-content" data-active-content="stars">
+                <span style="opacity: 0.5">Категория:</span>
+                <span class="bot-content content-stars" style="opacity: 0.7"
+                  >Звёзды и NFT</span
+                >
+                <span class="bot-content content-movies" style="opacity: 0.7"
+                  >Кино и Фильмы</span
+                >
+                <span class="bot-content content-shops" style="opacity: 0.7"
+                  >Магазины</span
+                >
+                <span class="bot-content content-games" style="opacity: 0.7"
+                  >Игровые</span
+                >
+              </div>
+            </div>
+
+            <!-- Контейнер для кнопки с контекстным меню -->
+            <div class="integration-container">
+              <div class="integration" id="integrationButton">
+                <img
+                  class="sotsint"
+                  src="static/UI/sotsintegration.png"
+                  alt=""
+                />
+                <span>Интеграции</span>
+                <div class="arrow-container">
+                  <img
+                    class="arrow white"
+                    src="static/UI/arrowint.svg"
+                    alt=""
+                  />
+                  <img
+                    class="arrow black"
+                    src="static/UI/arrowintblack.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+
+              <!-- Контекстное меню -->
+              <div
+                class="integrations-context-menu"
+                id="integrationsContextMenu"
+              >
+                <div class="context-menu-item">
+                  <div class="context-menu-icon">
+                    <img src="static/logos/flyer.JPG" alt="VK" />
+                  </div>
+                  <span>Flyer</span>
+                </div>
+
+                <div class="context-menu-item">
+                  <div class="context-menu-icon">
+                    <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                  </div>
+                  <span>Subgram</span>
+                </div>
+              </div>
+
+              <!-- Стрелочка меню -->
+              <div class="context-menu-arrow"></div>
+            </div>
+          </div>
+
+          <div class="bottom-main" data-active-content="stars">
+            <h1>
+              <span class="bot-content content-stars"
+                >Игровой звездный-бот</span
+              >
+              <span class="bot-content content-movies">Кино-бот</span>
+              <span class="bot-content content-shops">Магазин-бот</span>
+              <span class="bot-content content-games">Игровой бот</span>
+            </h1>
+            <p>
+              <span class="bot-content content-stars">
+                Азартный бот со звёдами и вращениями. Встроена
+                <strong>реклама</strong>, минимальный вывод – весь
+                <strong>профит идет владельцу.</strong>
+              </span>
+              <span class="bot-content content-movies">
+                Бот для кино и фильмов с рекомендациями и рецензиями.
+                <strong>Автоматическая публикация</strong> новостей и
+                <strong>интерактивный поиск</strong> фильмов.
+              </span>
+              <span class="bot-content content-shops">
+                Торговый бот для онлайн-магазинов. Поддержка
+                <strong>множественных платежных систем</strong> и
+                <strong>автоматизация заказов</strong>.
+              </span>
+              <span class="bot-content content-games">
+                Игровой бот с системой достижений и рейтингов.
+                <strong>Мультиплеерные игры</strong> и
+                <strong>виртуальная экономика</strong>.
+              </span>
+            </p>
+            <div class="form">
+              <input
+                placeholder="Введите токен из бота @BotFather"
+                type="text"
+              />
+              <div class="buttons">
+                <div class="button create">
+                  <span>Создать</span>
+                </div>
+                <div class="button demo">
+                  <span> Демо-доступ </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Оверлей для закрытия меню -->
+        <div class="context-overlay" id="contextOverlay"></div>
       </div>
     </div>
 
+    <script src="js/store.js"></script>
     <script src="js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Функционал для выбора типа бота
+        const botTypes = document.querySelectorAll(".bot-type");
+        let selectedBotType = "stars";
+
+        function updateActiveState(selectedType) {
+          botTypes.forEach((type) => {
+            const botTypeValue = type.getAttribute("data-bot-type");
+            if (
+              botTypeValue === selectedType &&
+              !type.classList.contains("disabled")
+            ) {
+              type.classList.add("active");
+              selectedBotType = selectedType;
+            } else {
+              type.classList.remove("active");
+            }
+          });
+
+          // Обновляем data-атрибут на body и элементах с контентом
+          document.body.setAttribute("data-bot-type", selectedBotType);
+          document
+            .querySelector(".bottom-main")
+            .setAttribute("data-active-content", selectedBotType);
+          document
+            .querySelector(".category-content")
+            .setAttribute("data-active-content", selectedBotType);
+          document
+            .querySelector(".category-icon")
+            .setAttribute("data-active-content", selectedBotType);
+
+          if (typeof store !== "undefined") {
+            store.state.selectedBotType = selectedBotType;
+          }
+          console.log("Выбран тип бота:", selectedBotType);
+        }
+
+        botTypes.forEach((type) => {
+          type.addEventListener("click", function () {
+            const botTypeValue = this.getAttribute("data-bot-type");
+            if (this.classList.contains("disabled")) return;
+            updateActiveState(botTypeValue);
+          });
+        });
+
+        updateActiveState(selectedBotType);
+
+        if (typeof store !== "undefined") {
+          if (store.state.selectedBotType) {
+            updateActiveState(store.state.selectedBotType);
+          }
+          store.subscribe((state) => {
+            if (
+              state.selectedBotType &&
+              state.selectedBotType !== selectedBotType
+            ) {
+              updateActiveState(state.selectedBotType);
+            }
+          });
+        }
+
+        // Функционал для контекстного меню интеграций
+        const integrationButton = document.getElementById("integrationButton");
+        const integrationsContextMenu = document.getElementById(
+          "integrationsContextMenu"
+        );
+        const contextOverlay = document.getElementById("contextOverlay");
+        const arrowWhite = document.querySelector(".arrow.white");
+        const arrowBlack = document.querySelector(".arrow.black");
+
+        function toggleIntegrationsMenu() {
+          const isActive = integrationsContextMenu.classList.contains("active");
+
+          if (isActive) {
+            closeIntegrationsMenu();
+          } else {
+            openIntegrationsMenu();
+          }
+        }
+
+        function openIntegrationsMenu() {
+          integrationsContextMenu.classList.add("active");
+          contextOverlay.classList.add("active");
+          // Добавляем класс open к стрелкам
+          arrowWhite.classList.add("open");
+          arrowBlack.classList.add("open");
+        }
+
+        function closeIntegrationsMenu() {
+          integrationsContextMenu.classList.remove("active");
+          contextOverlay.classList.remove("active");
+          // Убираем класс open у стрелок
+          arrowWhite.classList.remove("open");
+          arrowBlack.classList.remove("open");
+        }
+
+        integrationButton.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggleIntegrationsMenu();
+        });
+
+        // Закрытие меню при клике вне его
+        contextOverlay.addEventListener("click", closeIntegrationsMenu);
+        document.addEventListener("click", closeIntegrationsMenu);
+
+        // Предотвращаем закрытие при клике внутри меню
+        integrationsContextMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        // Закрытие по ESC
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            integrationsContextMenu.classList.contains("active")
+          ) {
+            closeIntegrationsMenu();
+          }
+        });
+
+        // Обработка выбора пункта меню
+        const menuItems =
+          integrationsContextMenu.querySelectorAll(".context-menu-item");
+        menuItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const integrationName = item.querySelector("span").textContent;
+            console.log("Выбрана интеграция:", integrationName);
+            // Здесь можно добавить логику для выбранной интеграции
+            closeIntegrationsMenu();
+          });
+        });
+      });
+    </script>
   </body>
 </html>

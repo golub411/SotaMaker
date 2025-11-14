@@ -3,101 +3,92 @@ const tg = window.Telegram.WebApp;
 
 // Инициализируем приложение
 tg.expand();
-tg.enableClosingConfirmation();
+tg.disableVerticalSwipes();
+tg.setHeaderColor('#FBC717');
 
-// Получаем данные
-const initData = tg.initData;
-const initDataUnsafe = tg.initDataUnsafe;
-const user = initDataUnsafe.user;
+// Функция создания бота
+async function createBot(payload) {
+    const response = await fetch("/api/create_bot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
 
-// Отображаем данные пользователя
-function displayUserData() {
-    const userDataEl = document.getElementById('user-data');
-    
-    if (user) {
-        userDataEl.innerHTML = `
-            <p><strong>🆔 ID:</strong> ${user.id}</p>
-            <p><strong>👤 Имя:</strong> ${user.first_name}</p>
-            <p><strong>👥 Фамилия:</strong> ${user.last_name || 'Не указана'}</p>
-            <p><strong>📱 Username:</strong> @${user.username || 'Не указан'}</p>
-            <p><strong>🌐 Язык:</strong> ${user.language_code || 'Не указан'}</p>
-            <p><strong>✅ Premium:</strong> ${user.is_premium ? 'Да' : 'Нет'}</p>
-        `;
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.detail?.message || result.message || 'Unknown error');
+    }
+
+    return result;
+}
+
+// Функция для показа/скрытия загрузки на кнопке
+function setButtonLoading(button, isLoading) {
+    if (isLoading) {
+        button.classList.add('loading');
+        button.style.pointerEvents = 'none';
     } else {
-        userDataEl.innerHTML = '<p style="color: red; text-align: center;">⚠️ Данные пользователя недоступны</p>';
+        button.classList.remove('loading');
+        button.style.pointerEvents = 'auto';
     }
 }
 
-// Отображаем debug информацию
-function displayDebugInfo() {
-    document.getElementById('debug-data').innerHTML = `
-        <p><strong>📡 Platform:</strong> ${tg.platform}</p>
-        <p><strong>🎨 Theme:</strong> ${tg.colorScheme}</p>
-        <p><strong>📱 Viewport:</strong> ${tg.viewportHeight}x${tg.viewportWidth}</p>
-        <p><strong>🔗 Init Data:</strong> ${initData ? 'Доступны' : 'Нет данных'}</p>
-        <p><strong>🌙 Dark Mode:</strong> ${tg.colorScheme === 'dark' ? 'Да' : 'Нет'}</p>
-    `;
-}
+// Функция создания бота с обработкой загрузки
+async function handleCreateBot() {
+    const tokenInput = document.querySelector('.form input[type="text"]');
+    const createButton = document.querySelector('.button.create');
+    const token = tokenInput.value.trim();
+    
+    // Получаем выбранный тип бота
+    const selectedBotType = document.body.getAttribute('data-bot-type');
 
-// Функция отправки сообщения
-function sendMessage() {
-    if (!user) {
-        tg.showAlert('Ошибка: данные пользователя недоступны');
+    // Проверяем токен
+    if (!token) {
+        tg.showAlert('❌ Пожалуйста, введите токен бота от @BotFather');
         return;
     }
 
-    const message = {
-        action: 'user_message',
-        user_id: user.id,
-        text: 'Привет из мини-приложения! 🚀',
-        timestamp: Date.now(),
-        platform: tg.platform
-    };
-    
-    // Отправляем данные боту
-    tg.sendData(JSON.stringify(message));
-    
-    // Показываем подтверждение
-    tg.showPopup({
-        title: '✅ Успешно!',
-        message: 'Сообщение отправлено боту',
-        buttons: [{ type: 'ok' }]
-    });
+    // Показываем загрузку
+    setButtonLoading(createButton, true);
+
+    try {
+        // Минимальное время загрузки - 0.3 секунды
+        const minLoadTime = new Promise(resolve => setTimeout(resolve, 300));
+        
+        // Создаем payload
+        const payload = {
+            token: token,
+            template: selectedBotType,
+            initData: tg.initData
+        };
+
+        // Отправляем запрос
+        const createPromise = createBot(payload);
+        
+        // Ждем минимум 0.3 секунды
+        const [result] = await Promise.all([createPromise, minLoadTime]);
+
+        // Показываем успех
+        tg.showAlert(`✅ Бот успешно создан!\nUsername: @${result.bot_username}`);
+        
+        // Очищаем поле ввода
+        tokenInput.value = '';
+
+    } catch (error) {
+        console.error('Ошибка создания бота:', error);
+        tg.showAlert(`❌ Ошибка: ${error.message}`);
+    } finally {
+        // Убираем загрузку
+        setButtonLoading(createButton, false);
+    }
 }
-
-// Функция показа alert
-function showAlert() {
-    tg.showAlert('🎉 Это сообщение из мини-приложения!');
-}
-
-// Функция закрытия приложения
-function closeApp() {
-    tg.close();
-}
-
-// Обработчики событий Telegram
-tg.onEvent('viewportChanged', (event) => {
-    console.log('Viewport changed:', event);
-    displayDebugInfo();
-});
-
-tg.onEvent('themeChanged', () => {
-    console.log('Theme changed to:', tg.colorScheme);
-    displayDebugInfo();
-});
-
-// Настраиваем основную кнопку
-tg.MainButton.setText("📤 Отправить данные")
-    .show()
-    .onClick(sendMessage);
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
-    displayUserData();
-    displayDebugInfo();
-    
-    // Адаптируем стили под тему Telegram
-    if (tg.colorScheme === 'dark') {
-        document.body.style.background = 'linear-gradient(135deg, #2c3e50 0%, #3498db 100%)';
+    // Добавляем обработчик на кнопку "Создать"
+    const createButton = document.querySelector('.button.create');
+    if (createButton) {
+        createButton.addEventListener('click', handleCreateBot);
     }
 });
