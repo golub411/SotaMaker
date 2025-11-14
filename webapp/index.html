@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SotaMaker 2.0</title>
     <link rel="stylesheet" href="css/style.css" />
-    <script src="js/app.js"></script>
+
+    <!-- Подключаем Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body data-bot-type="stars">
     <div class="layout">
@@ -228,22 +230,44 @@
 
     <script src="js/store.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Ждем полной инициализации Telegram Web App
+      // Инициализация Telegram Web App
+      function initTelegramWebApp() {
+        // Проверяем, что Telegram Web App доступен
         if (window.Telegram && window.Telegram.WebApp) {
           const tg = window.Telegram.WebApp;
 
-          // Инициализируем приложение
-          tg.ready(); // Сообщаем Telegram, что приложение готово
-          tg.expand();
-          tg.disableVerticalSwipes();
-          tg.setHeaderColor("#FBC717");
-          tg.setBackgroundColor("#FBC717"); // Дополнительно можно установить цвет фона
+          console.log("Telegram Web App инициализирован", {
+            platform: tg.platform,
+            version: tg.version,
+            initData: tg.initData,
+          });
 
-          console.log("Telegram Web App инициализирован");
+          // Основные настройки
+          tg.expand(); // Растягиваем на весь экран
+          tg.disableVerticalSwipes(); // Отключаем свайпы
+          tg.setHeaderColor("#FBC717"); // Устанавливаем цвет хедера
+          tg.setBackgroundColor("#FBC717"); // Устанавливаем цвет фона
+
+          // Дополнительные настройки для лучшего UX
+          tg.enableClosingConfirmation(); // Подтверждение закрытия
+          tg.MainButton.setText("Создать бота"); // Устанавливаем текст кнопки
+
+          // Сообщаем Telegram, что приложение готово
+          tg.ready();
+
+          return tg;
         } else {
-          console.error("Telegram Web App не найден");
+          console.warn(
+            "Telegram Web App не доступен. Запускаем в режиме браузера."
+          );
+          return null;
         }
+      }
+
+      // Инициализируем при загрузке DOM
+      document.addEventListener("DOMContentLoaded", function () {
+        // Инициализируем Telegram Web App
+        const tg = initTelegramWebApp();
 
         // Функционал для выбора типа бота
         const botTypes = document.querySelectorAll(".bot-type");
@@ -327,7 +351,6 @@
         function openIntegrationsMenu() {
           integrationsContextMenu.classList.add("active");
           contextOverlay.classList.add("active");
-          // Добавляем класс open к стрелкам
           arrowWhite.classList.add("open");
           arrowBlack.classList.add("open");
         }
@@ -335,7 +358,6 @@
         function closeIntegrationsMenu() {
           integrationsContextMenu.classList.remove("active");
           contextOverlay.classList.remove("active");
-          // Убираем класс open у стрелок
           arrowWhite.classList.remove("open");
           arrowBlack.classList.remove("open");
         }
@@ -371,10 +393,111 @@
           item.addEventListener("click", function () {
             const integrationName = item.querySelector("span").textContent;
             console.log("Выбрана интеграция:", integrationName);
-            // Здесь можно добавить логику для выбранной интеграции
+
+            // Показываем уведомление через Telegram Web App
+            if (tg) {
+              tg.showPopup({
+                title: "Интеграция",
+                message: `Выбрана интеграция: ${integrationName}`,
+                buttons: [{ type: "ok" }],
+              });
+            }
+
             closeIntegrationsMenu();
           });
         });
+
+        // Функция создания бота
+        async function createBot(payload) {
+          const response = await fetch("/api/create_bot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              result.detail?.message || result.message || "Unknown error"
+            );
+          }
+
+          return result;
+        }
+
+        // Функция для показа/скрытия загрузки на кнопке
+        function setButtonLoading(button, isLoading) {
+          if (isLoading) {
+            button.classList.add("loading");
+            button.style.pointerEvents = "none";
+          } else {
+            button.classList.remove("loading");
+            button.style.pointerEvents = "auto";
+          }
+        }
+
+        // Функция создания бота с обработкой загрузки
+        async function handleCreateBot() {
+          const tokenInput = document.querySelector('.form input[type="text"]');
+          const createButton = document.querySelector(".button.create");
+          const token = tokenInput.value.trim();
+
+          const selectedBotType = document.body.getAttribute("data-bot-type");
+
+          if (!token) {
+            if (tg) {
+              tg.showAlert("❌ Пожалуйста, введите токен бота от @BotFather");
+            } else {
+              alert("❌ Пожалуйста, введите токен бота от @BotFather");
+            }
+            return;
+          }
+
+          setButtonLoading(createButton, true);
+
+          try {
+            const minLoadTime = new Promise((resolve) =>
+              setTimeout(resolve, 300)
+            );
+
+            const payload = {
+              token: token,
+              template: selectedBotType,
+              initData: tg ? tg.initData : null,
+            };
+
+            const createPromise = createBot(payload);
+            const [result] = await Promise.all([createPromise, minLoadTime]);
+
+            if (tg) {
+              tg.showAlert(
+                `✅ Бот успешно создан!\nUsername: @${result.bot_username}`
+              );
+            } else {
+              alert(
+                `✅ Бот успешно создан!\nUsername: @${result.bot_username}`
+              );
+            }
+
+            tokenInput.value = "";
+          } catch (error) {
+            console.error("Ошибка создания бота:", error);
+            if (tg) {
+              tg.showAlert(`❌ Ошибка: ${error.message}`);
+            } else {
+              alert(`❌ Ошибка: ${error.message}`);
+            }
+          } finally {
+            setButtonLoading(createButton, false);
+          }
+        }
+
+        // Добавляем обработчик на кнопку "Создать"
+        const createButton = document.querySelector(".button.create");
+        if (createButton) {
+          createButton.addEventListener("click", handleCreateBot);
+        }
       });
     </script>
   </body>
