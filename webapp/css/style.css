@@ -537,15 +537,7 @@ body::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   gap: 10.25vw;
-  margin-bottom: 50px;
-}
-
-.bottom-main {
-  margin-top: 7.69vw; /* Значение для первого элемента */
-}
-
-.category-intgr:not(:first-child) {
-  margin-top: 70px; /* Ваше большее значение */
+  margin-bottom: 90px;
 }
 
 .bottom-main > h1 {

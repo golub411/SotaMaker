@@ -94,98 +94,93 @@
         </div>
 
         <div class="bottom-block">
-          <div class="category-intgr">
-            <div class="category">
-              <div class="category-icon" data-active-content="stars">
-                <div class="bot-content content-stars">
-                  <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
-                </div>
-                <div class="bot-content content-movies">
-                  <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
-                </div>
-                <div class="bot-content content-shops">
-                  <img src="static/UI/staricon.png" alt="Магазины" />
-                </div>
-                <div class="bot-content content-games">
-                  <img src="static/UI/staricon.png" alt="Игровые" />
-                </div>
-              </div>
-              <div class="category-content" data-active-content="stars">
-                <span style="opacity: 0.5">Категория:</span>
-                <span class="bot-content content-stars" style="opacity: 0.7"
-                  >Звёзды и NFT</span
-                >
-                <span class="bot-content content-movies" style="opacity: 0.7"
-                  >Кино и Фильмы</span
-                >
-                <span class="bot-content content-shops" style="opacity: 0.7"
-                  >Магазины</span
-                >
-                <span class="bot-content content-games" style="opacity: 0.7"
-                  >Игровые</span
-                >
-              </div>
-            </div>
-
-            <!-- Контейнер для кнопки с контекстным меню -->
-            <div class="integration-container">
-              <div class="integration" id="integrationButton">
-                <img
-                  class="sotsint"
-                  src="static/UI/sotsintegration.png"
-                  alt=""
-                />
-                <span>Интеграции</span>
-                <div class="arrow-container">
-                  <img
-                    class="arrow white"
-                    src="static/UI/arrowint.svg"
-                    alt=""
-                  />
-                  <img
-                    class="arrow black"
-                    src="static/UI/arrowintblack.svg"
-                    alt=""
-                  />
-                </div>
-              </div>
-
-              <!-- Контекстное меню -->
-              <div
-                class="integrations-context-menu"
-                id="integrationsContextMenu"
-              >
-                <div class="context-menu-item">
-                  <div class="context-menu-icon">
-                    <img src="static/logos/flyer.JPG" alt="VK" />
-                  </div>
-                  <span>Flyer</span>
-                </div>
-
-                <div class="context-menu-item">
-                  <div class="context-menu-icon">
-                    <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
-                  </div>
-                  <span>Subgram</span>
-                </div>
-              </div>
-
-              <!-- Стрелочка меню -->
-              <div class="context-menu-arrow"></div>
-            </div>
-          </div>
-
           <!-- Шаблоны для категории Звёзды и NFT -->
           <div class="templates-container" data-category="stars">
-            <!-- <div class="template-selector"> -->
-            <!-- <div class="template-tabs">
-                <div class="template-tab active" data-template="stars-default">
-                  <span>Базовый шаблон</span>
-                </div>
-              </div> -->
-            <!-- </div> -->
-
             <div class="bottom-main active" data-template="stars-default">
+              <!-- Блок категории и интеграций для этого шаблона -->
+              <div class="category-intgr">
+                <div class="category">
+                  <div class="category-icon" data-active-content="stars">
+                    <div class="bot-content content-stars">
+                      <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                    </div>
+                    <div class="bot-content content-movies">
+                      <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                    </div>
+                    <div class="bot-content content-shops">
+                      <img src="static/UI/staricon.png" alt="Магазины" />
+                    </div>
+                    <div class="bot-content content-games">
+                      <img src="static/UI/staricon.png" alt="Игровые" />
+                    </div>
+                  </div>
+                  <div class="category-content" data-active-content="stars">
+                    <span style="opacity: 0.5">Категория:</span>
+                    <span class="bot-content content-stars" style="opacity: 0.7"
+                      >Звёзды и NFT</span
+                    >
+                    <span
+                      class="bot-content content-movies"
+                      style="opacity: 0.7"
+                      >Кино и Фильмы</span
+                    >
+                    <span class="bot-content content-shops" style="opacity: 0.7"
+                      >Магазины</span
+                    >
+                    <span class="bot-content content-games" style="opacity: 0.7"
+                      >Игровые</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Контейнер для кнопки с контекстным меню -->
+                <div class="integration-container">
+                  <div class="integration" id="integrationButton">
+                    <img
+                      class="sotsint"
+                      src="static/UI/sotsintegration.png"
+                      alt=""
+                    />
+                    <span>Интеграции</span>
+                    <div class="arrow-container">
+                      <img
+                        class="arrow white"
+                        src="static/UI/arrowint.svg"
+                        alt=""
+                      />
+                      <img
+                        class="arrow black"
+                        src="static/UI/arrowintblack.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Контекстное меню -->
+                  <div
+                    class="integrations-context-menu"
+                    id="integrationsContextMenu"
+                  >
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/flyer.JPG" alt="VK" />
+                      </div>
+                      <span>Flyer</span>
+                    </div>
+
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                      </div>
+                      <span>Subgram</span>
+                    </div>
+                  </div>
+
+                  <!-- Стрелочка меню -->
+                  <div class="context-menu-arrow"></div>
+                </div>
+              </div>
+
               <h1>
                 <span>Игровой звездный-бот</span>
               </h1>
@@ -213,25 +208,92 @@
 
           <!-- Шаблоны для категории Кино и Фильмы -->
           <div class="templates-container" data-category="movies">
-            <!-- <div class="template-selector"> -->
-            <!-- <div class="template-tabs">
-                <div class="template-tab active" data-template="movies-cinema">
-                  <span>Кино-бот</span>
-                </div>
-                <div class="template-tab" data-template="movies-reviews">
-                  <span>Кино-критик</span>
-                </div>
-                <div
-                  class="template-tab"
-                  data-template="movies-recommendations"
-                >
-                  <span>Кино-рекомендатор</span>
-                </div>
-              </div> -->
-            <!-- </div> -->
-
             <!-- Шаблон 1: Кино-бот -->
             <div class="bottom-main active" data-template="movies-cinema">
+              <!-- Блок категории и интеграций для этого шаблона -->
+              <div class="category-intgr">
+                <div class="category">
+                  <div class="category-icon" data-active-content="movies">
+                    <div class="bot-content content-stars">
+                      <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                    </div>
+                    <div class="bot-content content-movies">
+                      <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                    </div>
+                    <div class="bot-content content-shops">
+                      <img src="static/UI/staricon.png" alt="Магазины" />
+                    </div>
+                    <div class="bot-content content-games">
+                      <img src="static/UI/staricon.png" alt="Игровые" />
+                    </div>
+                  </div>
+                  <div class="category-content" data-active-content="movies">
+                    <span style="opacity: 0.5">Категория:</span>
+                    <span class="bot-content content-stars" style="opacity: 0.7"
+                      >Звёзды и NFT</span
+                    >
+                    <span
+                      class="bot-content content-movies"
+                      style="opacity: 0.7"
+                      >Кино и Фильмы</span
+                    >
+                    <span class="bot-content content-shops" style="opacity: 0.7"
+                      >Магазины</span
+                    >
+                    <span class="bot-content content-games" style="opacity: 0.7"
+                      >Игровые</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Контейнер для кнопки с контекстным меню -->
+                <div class="integration-container">
+                  <div class="integration" id="integrationButton">
+                    <img
+                      class="sotsint"
+                      src="static/UI/sotsintegration.png"
+                      alt=""
+                    />
+                    <span>Интеграции</span>
+                    <div class="arrow-container">
+                      <img
+                        class="arrow white"
+                        src="static/UI/arrowint.svg"
+                        alt=""
+                      />
+                      <img
+                        class="arrow black"
+                        src="static/UI/arrowintblack.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Контекстное меню -->
+                  <div
+                    class="integrations-context-menu"
+                    id="integrationsContextMenu"
+                  >
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/flyer.JPG" alt="VK" />
+                      </div>
+                      <span>Flyer</span>
+                    </div>
+
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                      </div>
+                      <span>Subgram</span>
+                    </div>
+                  </div>
+
+                  <!-- Стрелочка меню -->
+                  <div class="context-menu-arrow"></div>
+                </div>
+              </div>
+
               <h1>
                 <span>Кино-бот</span>
               </h1>
@@ -258,6 +320,90 @@
 
             <!-- Шаблон 2: Кино-критик -->
             <div class="bottom-main" data-template="movies-reviews">
+              <!-- Блок категории и интеграций для этого шаблона -->
+              <div class="category-intgr">
+                <div class="category">
+                  <div class="category-icon" data-active-content="movies">
+                    <div class="bot-content content-stars">
+                      <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                    </div>
+                    <div class="bot-content content-movies">
+                      <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                    </div>
+                    <div class="bot-content content-shops">
+                      <img src="static/UI/staricon.png" alt="Магазины" />
+                    </div>
+                    <div class="bot-content content-games">
+                      <img src="static/UI/staricon.png" alt="Игровые" />
+                    </div>
+                  </div>
+                  <div class="category-content" data-active-content="movies">
+                    <span style="opacity: 0.5">Категория:</span>
+                    <span class="bot-content content-stars" style="opacity: 0.7"
+                      >Звёзды и NFT</span
+                    >
+                    <span
+                      class="bot-content content-movies"
+                      style="opacity: 0.7"
+                      >Кино и Фильмы</span
+                    >
+                    <span class="bot-content content-shops" style="opacity: 0.7"
+                      >Магазины</span
+                    >
+                    <span class="bot-content content-games" style="opacity: 0.7"
+                      >Игровые</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Контейнер для кнопки с контекстным меню -->
+                <div class="integration-container">
+                  <div class="integration" id="integrationButton">
+                    <img
+                      class="sotsint"
+                      src="static/UI/sotsintegration.png"
+                      alt=""
+                    />
+                    <span>Интеграции</span>
+                    <div class="arrow-container">
+                      <img
+                        class="arrow white"
+                        src="static/UI/arrowint.svg"
+                        alt=""
+                      />
+                      <img
+                        class="arrow black"
+                        src="static/UI/arrowintblack.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Контекстное меню -->
+                  <div
+                    class="integrations-context-menu"
+                    id="integrationsContextMenu"
+                  >
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/flyer.JPG" alt="VK" />
+                      </div>
+                      <span>Flyer</span>
+                    </div>
+
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                      </div>
+                      <span>Subgram</span>
+                    </div>
+                  </div>
+
+                  <!-- Стрелочка меню -->
+                  <div class="context-menu-arrow"></div>
+                </div>
+              </div>
+
               <h1>
                 <span>Кино-критик</span>
               </h1>
@@ -284,6 +430,90 @@
 
             <!-- Шаблон 3: Кино-рекомендатор -->
             <div class="bottom-main" data-template="movies-recommendations">
+              <!-- Блок категории и интеграций для этого шаблона -->
+              <div class="category-intgr">
+                <div class="category">
+                  <div class="category-icon" data-active-content="movies">
+                    <div class="bot-content content-stars">
+                      <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                    </div>
+                    <div class="bot-content content-movies">
+                      <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                    </div>
+                    <div class="bot-content content-shops">
+                      <img src="static/UI/staricon.png" alt="Магазины" />
+                    </div>
+                    <div class="bot-content content-games">
+                      <img src="static/UI/staricon.png" alt="Игровые" />
+                    </div>
+                  </div>
+                  <div class="category-content" data-active-content="movies">
+                    <span style="opacity: 0.5">Категория:</span>
+                    <span class="bot-content content-stars" style="opacity: 0.7"
+                      >Звёзды и NFT</span
+                    >
+                    <span
+                      class="bot-content content-movies"
+                      style="opacity: 0.7"
+                      >Кино и Фильмы</span
+                    >
+                    <span class="bot-content content-shops" style="opacity: 0.7"
+                      >Магазины</span
+                    >
+                    <span class="bot-content content-games" style="opacity: 0.7"
+                      >Игровые</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Контейнер для кнопки с контекстным меню -->
+                <div class="integration-container">
+                  <div class="integration" id="integrationButton">
+                    <img
+                      class="sotsint"
+                      src="static/UI/sotsintegration.png"
+                      alt=""
+                    />
+                    <span>Интеграции</span>
+                    <div class="arrow-container">
+                      <img
+                        class="arrow white"
+                        src="static/UI/arrowint.svg"
+                        alt=""
+                      />
+                      <img
+                        class="arrow black"
+                        src="static/UI/arrowintblack.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Контекстное меню -->
+                  <div
+                    class="integrations-context-menu"
+                    id="integrationsContextMenu"
+                  >
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/flyer.JPG" alt="VK" />
+                      </div>
+                      <span>Flyer</span>
+                    </div>
+
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                      </div>
+                      <span>Subgram</span>
+                    </div>
+                  </div>
+
+                  <!-- Стрелочка меню -->
+                  <div class="context-menu-arrow"></div>
+                </div>
+              </div>
+
               <h1>
                 <span>Кино-рекомендатор</span>
               </h1>
@@ -311,15 +541,91 @@
 
           <!-- Шаблоны для категории Магазины -->
           <div class="templates-container" data-category="shops">
-            <!-- <div class="template-selector">
-              <div class="template-tabs">
-                <div class="template-tab active" data-template="shops-default">
-                  <span>Базовый шаблон</span>
+            <div class="bottom-main active" data-template="shops-default">
+              <!-- Блок категории и интеграций для этого шаблона -->
+              <div class="category-intgr">
+                <div class="category">
+                  <div class="category-icon" data-active-content="shops">
+                    <div class="bot-content content-stars">
+                      <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                    </div>
+                    <div class="bot-content content-movies">
+                      <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                    </div>
+                    <div class="bot-content content-shops">
+                      <img src="static/UI/staricon.png" alt="Магазины" />
+                    </div>
+                    <div class="bot-content content-games">
+                      <img src="static/UI/staricon.png" alt="Игровые" />
+                    </div>
+                  </div>
+                  <div class="category-content" data-active-content="shops">
+                    <span style="opacity: 0.5">Категория:</span>
+                    <span class="bot-content content-stars" style="opacity: 0.7"
+                      >Звёзды и NFT</span
+                    >
+                    <span
+                      class="bot-content content-movies"
+                      style="opacity: 0.7"
+                      >Кино и Фильмы</span
+                    >
+                    <span class="bot-content content-shops" style="opacity: 0.7"
+                      >Магазины</span
+                    >
+                    <span class="bot-content content-games" style="opacity: 0.7"
+                      >Игровые</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Контейнер для кнопки с контекстным меню -->
+                <div class="integration-container">
+                  <div class="integration" id="integrationButton">
+                    <img
+                      class="sotsint"
+                      src="static/UI/sotsintegration.png"
+                      alt=""
+                    />
+                    <span>Интеграции</span>
+                    <div class="arrow-container">
+                      <img
+                        class="arrow white"
+                        src="static/UI/arrowint.svg"
+                        alt=""
+                      />
+                      <img
+                        class="arrow black"
+                        src="static/UI/arrowintblack.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Контекстное меню -->
+                  <div
+                    class="integrations-context-menu"
+                    id="integrationsContextMenu"
+                  >
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/flyer.JPG" alt="VK" />
+                      </div>
+                      <span>Flyer</span>
+                    </div>
+
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                      </div>
+                      <span>Subgram</span>
+                    </div>
+                  </div>
+
+                  <!-- Стрелочка меню -->
+                  <div class="context-menu-arrow"></div>
                 </div>
               </div>
-            </div> -->
 
-            <div class="bottom-main active" data-template="shops-default">
               <h1>
                 <span>Магазин-бот</span>
               </h1>
@@ -347,15 +653,91 @@
 
           <!-- Шаблоны для категории Игровые -->
           <div class="templates-container" data-category="games">
-            <!-- <div class="template-selector"> -->
-            <!-- <div class="template-tabs">
-                <div class="template-tab active" data-template="games-default">
-                  <span>Базовый шаблон</span>
-                </div>
-              </div> -->
-            <!-- </div> -->
-
             <div class="bottom-main active" data-template="games-default">
+              <!-- Блок категории и интеграций для этого шаблона -->
+              <div class="category-intgr">
+                <div class="category">
+                  <div class="category-icon" data-active-content="games">
+                    <div class="bot-content content-stars">
+                      <img src="static/UI/staricon.png" alt="Звёзды и NFT" />
+                    </div>
+                    <div class="bot-content content-movies">
+                      <img src="static/emoji/basket.png" alt="Кино и Фильмы" />
+                    </div>
+                    <div class="bot-content content-shops">
+                      <img src="static/UI/staricon.png" alt="Магазины" />
+                    </div>
+                    <div class="bot-content content-games">
+                      <img src="static/UI/staricon.png" alt="Игровые" />
+                    </div>
+                  </div>
+                  <div class="category-content" data-active-content="games">
+                    <span style="opacity: 0.5">Категория:</span>
+                    <span class="bot-content content-stars" style="opacity: 0.7"
+                      >Звёзды и NFT</span
+                    >
+                    <span
+                      class="bot-content content-movies"
+                      style="opacity: 0.7"
+                      >Кино и Фильмы</span
+                    >
+                    <span class="bot-content content-shops" style="opacity: 0.7"
+                      >Магазины</span
+                    >
+                    <span class="bot-content content-games" style="opacity: 0.7"
+                      >Игровые</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Контейнер для кнопки с контекстным меню -->
+                <div class="integration-container">
+                  <div class="integration" id="integrationButton">
+                    <img
+                      class="sotsint"
+                      src="static/UI/sotsintegration.png"
+                      alt=""
+                    />
+                    <span>Интеграции</span>
+                    <div class="arrow-container">
+                      <img
+                        class="arrow white"
+                        src="static/UI/arrowint.svg"
+                        alt=""
+                      />
+                      <img
+                        class="arrow black"
+                        src="static/UI/arrowintblack.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Контекстное меню -->
+                  <div
+                    class="integrations-context-menu"
+                    id="integrationsContextMenu"
+                  >
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/flyer.JPG" alt="VK" />
+                      </div>
+                      <span>Flyer</span>
+                    </div>
+
+                    <div class="context-menu-item">
+                      <div class="context-menu-icon">
+                        <img src="static/logos/Subgram.JPG" alt="WhatsApp" />
+                      </div>
+                      <span>Subgram</span>
+                    </div>
+                  </div>
+
+                  <!-- Стрелочка меню -->
+                  <div class="context-menu-arrow"></div>
+                </div>
+              </div>
+
               <h1>
                 <span>Игровой бот</span>
               </h1>
@@ -380,6 +762,8 @@
               </div>
             </div>
           </div>
+
+          <div style="height: 100px"></div>
         </div>
 
         <!-- Оверлей для закрытия меню -->
@@ -418,6 +802,5 @@
 
     <script src="/webapp/js/app.js"></script>
     <script src="/webapp/js/store.js"></script>
-    <!-- <script></script> -->
   </body>
 </html>
