@@ -102,6 +102,15 @@
     <script>
       // Инициализация Telegram Web App
       document.addEventListener("DOMContentLoaded", function () {
+        console.log("📄 DOM загружен, запускаем приложение...");
+
+        // ПЕРВЫЙ ВЫЗОВ - сразу после DOM
+        if (typeof initApp === "function") {
+          console.log("🚀 Первый вызов initApp...");
+          initApp();
+        }
+
+        // Инициализация Telegram Web App
         if (window.Telegram && window.Telegram.WebApp) {
           const tg = window.Telegram.WebApp;
           tg.expand();
@@ -110,6 +119,14 @@
           tg.setBackgroundColor("#FBC717");
           tg.ready();
           console.log("Telegram Web App инициализирован");
+
+          // ВТОРОЙ ВЫЗОВ - после инициализации Telegram
+          setTimeout(() => {
+            console.log("🔄 Повторный вызов initApp после Telegram...");
+            if (typeof initApp === "function") {
+              initApp();
+            }
+          }, 100);
         }
       });
     </script>

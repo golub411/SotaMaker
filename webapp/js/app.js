@@ -358,65 +358,181 @@ function initTemplateSwitcher() {
 
 // Основная функция инициализации приложения
 function initApp() {
-  // Генерируем все шаблоны из конфига
-  const bottomBlock = document.querySelector('.bottom-block');
-  if (bottomBlock) {
-    const templatesHTML = generateTemplatesHTML();
-    bottomBlock.innerHTML = templatesHTML;
+  console.log('🚀 initApp вызвана, appInitialized:', window.appInitialized);
+  
+  // Если приложение уже полностью инициализировано, пропускаем
+  if (window.appInitialized === 'complete') {
+    console.log('⚠️ Приложение уже полностью инициализировано, пропускаем');
+    return;
   }
-
-  // Инициализация выбора типа бота
-  const botTypes = document.querySelectorAll(".bot-type");
-  let selectedBotType = "stars";
-
-  function updateActiveState(selectedType) {
-    // Обновляем кнопки выбора типа
-    botTypes.forEach((type) => {
-      const botTypeValue = type.getAttribute("data-bot-type");
-      if (botTypeValue === selectedType && !type.classList.contains("disabled")) {
-        type.classList.add("active");
-        selectedBotType = selectedType;
+  
+  try {
+    // Генерируем все шаблоны из конфига (всегда выполняем этот шаг)
+    const bottomBlock = document.querySelector('.bottom-block');
+    console.log('📦 bottomBlock найден:', !!bottomBlock);
+    
+    if (bottomBlock) {
+      const templatesHTML = generateTemplatesHTML();
+      console.log('📦 templatesHTML сгенерирован:', templatesHTML.length, 'символов');
+      
+      if (templatesHTML && templatesHTML.length > 0) {
+        bottomBlock.innerHTML = templatesHTML;
+        console.log('✅ Шаблоны добавлены в DOM');
+        
+        // Проверяем, что шаблоны действительно добавились
+        const templatesContainers = document.querySelectorAll('.templates-container');
+        console.log('📦 templatesContainers после добавления:', templatesContainers.length);
+        
+        templatesContainers.forEach(container => {
+          const bottomMains = container.querySelectorAll('.bottom-main');
+          console.log(`📦 bottom-main в контейнере ${container.dataset.category}:`, bottomMains.length);
+        });
       } else {
-        type.classList.remove("active");
+        console.error('❌ templatesHTML пустой или не сгенерирован');
+        // Не бросаем ошибку, пробуем продолжить
       }
-    });
-
-    // Обновляем data-атрибут
-    document.body.setAttribute("data-bot-type", selectedBotType);
-
-    // Показываем только активную категорию
-    document.querySelectorAll(".templates-container").forEach((container) => {
-      container.style.display = container.getAttribute("data-category") === selectedBotType ? "block" : "none";
-    });
-
-    console.log("Выбран тип бота:", selectedBotType);
-  }
-
-  // Обработчики для кнопок выбора типа
-  botTypes.forEach((type) => {
-    type.addEventListener("click", function () {
-      const botTypeValue = this.getAttribute("data-bot-type");
-      if (this.classList.contains("disabled")) return;
-      updateActiveState(botTypeValue);
-    });
-  });
-
-  // Инициализация
-  updateActiveState(selectedBotType);
-  initIntegrationsMenu();
-  initTemplateSwitcher();
-
-  // Обработчик создания бота
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('.button.create')) {
-      handleCreateBot();
+    } else {
+      console.error('❌ bottomBlock не найден!');
+      // Не бросаем ошибку, пробуем продолжить
     }
-  });
 
-  // Инициализация темы
-  initThemeSwitch();
+    // Если это первый вызов, инициализируем все обработчики
+    if (!window.appInitialized) {
+      console.log('🔄 Первая инициализация, настраиваем обработчики...');
+      
+      // Инициализация выбора типа бота
+      const botTypes = document.querySelectorAll(".bot-type");
+      console.log('⭐ botTypes найдено:', botTypes.length);
+      
+      let selectedBotType = "stars";
+
+      function updateActiveState(selectedType) {
+        console.log('🔄 Обновление состояния для типа:', selectedType);
+        
+        // Обновляем кнопки выбора типа
+        botTypes.forEach((type) => {
+          const botTypeValue = type.getAttribute("data-bot-type");
+          if (botTypeValue === selectedType && !type.classList.contains("disabled")) {
+            type.classList.add("active");
+            selectedBotType = selectedType;
+          } else {
+            type.classList.remove("active");
+          }
+        });
+
+        // Обновляем data-атрибут
+        document.body.setAttribute("data-bot-type", selectedBotType);
+
+        // Показываем только активную категорию
+        const templatesContainers = document.querySelectorAll(".templates-container");
+        console.log('📁 templatesContainers найдено:', templatesContainers.length);
+        
+        let shownCount = 0;
+        templatesContainers.forEach((container) => {
+          const containerCategory = container.getAttribute("data-category");
+          const shouldShow = containerCategory === selectedBotType;
+          container.style.display = shouldShow ? "block" : "none";
+          
+          if (shouldShow) {
+            shownCount++;
+            console.log(`✅ Контейнер ${containerCategory}: показан`);
+          } else {
+            console.log(`❌ Контейнер ${containerCategory}: скрыт`);
+          }
+        });
+        
+        console.log(`👀 Показано контейнеров: ${shownCount} из ${templatesContainers.length}`);
+        console.log("✅ Выбран тип бота:", selectedBotType);
+      }
+
+      // Обработчики для кнопок выбора типа
+      botTypes.forEach((type) => {
+        type.addEventListener("click", function () {
+          const botTypeValue = this.getAttribute("data-bot-type");
+          console.log('👆 Клик по типу бота:', botTypeValue);
+          if (this.classList.contains("disabled")) {
+            console.log('⏸️ Тип бота отключен:', botTypeValue);
+            return;
+          }
+          updateActiveState(botTypeValue);
+        });
+      });
+
+      // Инициализация начального состояния
+      updateActiveState(selectedBotType);
+      
+      // Инициализируем меню интеграций
+      try {
+        initIntegrationsMenu();
+        console.log('✅ Меню интеграций инициализировано');
+      } catch (e) {
+        console.error('❌ Ошибка инициализации меню интеграций:', e);
+      }
+      
+      // Инициализируем переключатель шаблонов
+      try {
+        initTemplateSwitcher();
+        console.log('✅ Переключатель шаблонов инициализирован');
+      } catch (e) {
+        console.error('❌ Ошибка инициализации переключателя шаблонов:', e);
+      }
+
+      // Обработчик создания бота
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.button.create')) {
+          console.log('👆 Клик по кнопке создания бота');
+          handleCreateBot();
+        }
+      });
+
+      // Обработчик демо-доступа
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.button.demo')) {
+          e.preventDefault();
+          console.log('👆 Клик по демо-доступу');
+          if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.showAlert("🚀 Демо-доступ будет доступен в следующем обновлении!");
+          } else {
+            alert("🚀 Демо-доступ будет доступен в следующем обновлении!");
+          }
+        }
+      });
+
+      // Инициализация темы
+      try {
+        initThemeSwitch();
+        console.log('✅ Переключатель темы инициализирован');
+      } catch (e) {
+        console.error('❌ Ошибка инициализации переключателя темы:', e);
+      }
+
+      // Помечаем приложение как полностью инициализированное
+      window.appInitialized = 'complete';
+      console.log('🎉 Приложение полностью инициализировано');
+    } else {
+      console.log('🔄 Повторный вызов - только рендер шаблонов');
+      
+      // При повторном вызове обновляем отображение активной категории
+      const selectedBotType = document.body.getAttribute("data-bot-type") || "stars";
+      const templatesContainers = document.querySelectorAll(".templates-container");
+      
+      templatesContainers.forEach((container) => {
+        const containerCategory = container.getAttribute("data-category");
+        const shouldShow = containerCategory === selectedBotType;
+        container.style.display = shouldShow ? "block" : "none";
+        console.log(`🔄 Контейнер ${containerCategory}: ${shouldShow ? 'показан' : 'скрыт'}`);
+      });
+    }
+    
+  } catch (error) {
+    console.error('❌ Ошибка в initApp:', error);
+    
+    // Показываем ошибку пользователю только в браузере (не в Telegram чтобы не спамить)
+    if (!window.Telegram || !window.Telegram.WebApp) {
+      alert("Произошла ошибка при загрузке приложения. Пожалуйста, перезагрузите страницу.");
+    }
+  }
 }
-
 // Инициализация переключателя темы
 function initThemeSwitch() {
   const themeSwitch = document.getElementById('themeSwitch');
