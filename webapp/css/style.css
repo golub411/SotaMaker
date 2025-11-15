@@ -973,10 +973,6 @@ body::-webkit-scrollbar {
     gap: 39.98px; /* 10.25vw * 3.9 */
   }
 
-  .bottom-main:first-child {
-    margin-top: 29.99px; /* Значение для первого элемента */
-  }
-
   .bottom-main > h1 {
     font-size: 41.96px; /* 10.76vw * 3.9 */
   }
