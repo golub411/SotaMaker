@@ -540,12 +540,12 @@ body::-webkit-scrollbar {
   margin-bottom: 50px;
 }
 
-.bottom-main:not(:first-child) {
-  margin-top: 15vw; /* Ваше большее значение */
+.bottom-main {
+  margin-top: 7.69vw; /* Значение для первого элемента */
 }
 
-.bottom-main:first-child {
-  margin-top: 7.69vw; /* Значение для первого элемента */
+.category-intgr:not(:first-child) {
+  margin-top: 70px; /* Ваше большее значение */
 }
 
 .bottom-main > h1 {
@@ -979,10 +979,6 @@ body::-webkit-scrollbar {
 
   .bottom-main {
     gap: 39.98px; /* 10.25vw * 3.9 */
-  }
-
-  .bottom-main:not(:first-child) {
-    margin-top: 60px; /* Ваше большее значение */
   }
 
   .bottom-main:first-child {

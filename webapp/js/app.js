@@ -85,82 +85,117 @@ async function handleCreateBot() {
     }
 }
 
-// Функционал для контекстного меню интеграций
+// Функционал для контекстного меню интеграций (обновленная версия для нескольких меню)
 function initIntegrationsMenu() {
-    const integrationButton = document.getElementById("integrationButton");
-    const integrationsContextMenu = document.getElementById(
-        "integrationsContextMenu"
-    );
     const contextOverlay = document.getElementById("contextOverlay");
-    const arrowWhite = document.querySelector(".arrow.white");
-    const arrowBlack = document.querySelector(".arrow.black");
+    
+    // Находим все контейнеры интеграций
+    const integrationContainers = document.querySelectorAll(".integration-container");
 
-    function toggleIntegrationsMenu() {
+    function toggleIntegrationsMenu(container) {
+        const integrationsContextMenu = container.querySelector(".integrations-context-menu");
+        const arrowWhite = container.querySelector(".arrow.white");
+        const arrowBlack = container.querySelector(".arrow.black");
         const isActive = integrationsContextMenu.classList.contains("active");
 
+        // Закрываем все остальные открытые меню
+        document.querySelectorAll(".integrations-context-menu.active").forEach(menu => {
+            if (menu !== integrationsContextMenu) {
+                menu.classList.remove("active");
+                const parentContainer = menu.closest('.integration-container');
+                parentContainer.querySelectorAll('.arrow.white.open, .arrow.black.open').forEach(arrow => {
+                    arrow.classList.remove("open");
+                });
+            }
+        });
+
         if (isActive) {
-            closeIntegrationsMenu();
+            closeIntegrationsMenu(container);
         } else {
-            openIntegrationsMenu();
+            openIntegrationsMenu(container);
         }
     }
 
-    function openIntegrationsMenu() {
+    function openIntegrationsMenu(container) {
+        const integrationsContextMenu = container.querySelector(".integrations-context-menu");
+        const arrowWhite = container.querySelector(".arrow.white");
+        const arrowBlack = container.querySelector(".arrow.black");
+
         integrationsContextMenu.classList.add("active");
         contextOverlay.classList.add("active");
-        arrowWhite.classList.add("open");
-        arrowBlack.classList.add("open");
+        if (arrowWhite) arrowWhite.classList.add("open");
+        if (arrowBlack) arrowBlack.classList.add("open");
     }
 
-    function closeIntegrationsMenu() {
+    function closeIntegrationsMenu(container) {
+        const integrationsContextMenu = container.querySelector(".integrations-context-menu");
+        const arrowWhite = container.querySelector(".arrow.white");
+        const arrowBlack = container.querySelector(".arrow.black");
+
         integrationsContextMenu.classList.remove("active");
         contextOverlay.classList.remove("active");
-        arrowWhite.classList.remove("open");
-        arrowBlack.classList.remove("open");
+        if (arrowWhite) arrowWhite.classList.remove("open");
+        if (arrowBlack) arrowBlack.classList.remove("open");
     }
 
-    integrationButton.addEventListener("click", function (e) {
-        e.stopPropagation();
-        toggleIntegrationsMenu();
+    function closeAllMenus() {
+        document.querySelectorAll(".integrations-context-menu.active").forEach(menu => {
+            menu.classList.remove("active");
+            const container = menu.closest('.integration-container');
+            container.querySelectorAll('.arrow.white.open, .arrow.black.open').forEach(arrow => {
+                arrow.classList.remove("open");
+            });
+        });
+        contextOverlay.classList.remove("active");
+    }
+
+    // Добавляем обработчики для каждого контейнера
+    integrationContainers.forEach(container => {
+        const integrationButton = container.querySelector(".integration");
+        const integrationsContextMenu = container.querySelector(".integrations-context-menu");
+
+        integrationButton.addEventListener("click", function (e) {
+            e.stopPropagation();
+            toggleIntegrationsMenu(container);
+        });
+
+        // Обработка выбора пункта меню
+        const menuItems = integrationsContextMenu.querySelectorAll(".context-menu-item");
+        menuItems.forEach((item) => {
+            item.addEventListener("click", function () {
+                const integrationName = item.querySelector("span").textContent;
+                console.log("Выбрана интеграция:", integrationName);
+
+                // Показываем уведомление через Telegram Web App
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.showPopup({
+                        title: "Интеграция",
+                        message: `Выбрана интеграция: ${integrationName}`,
+                        buttons: [{ type: "ok" }],
+                    });
+                }
+
+                closeIntegrationsMenu(container);
+            });
+        });
     });
 
     // Закрытие меню при клике вне его
-    contextOverlay.addEventListener("click", closeIntegrationsMenu);
-    document.addEventListener("click", closeIntegrationsMenu);
+    contextOverlay.addEventListener("click", closeAllMenus);
+    document.addEventListener("click", closeAllMenus);
 
     // Предотвращаем закрытие при клике внутри меню
-    integrationsContextMenu.addEventListener("click", function (e) {
-        e.stopPropagation();
+    document.querySelectorAll(".integrations-context-menu").forEach(menu => {
+        menu.addEventListener("click", function (e) {
+            e.stopPropagation();
+        });
     });
 
     // Закрытие по ESC
     document.addEventListener("keydown", function (e) {
-        if (
-            e.key === "Escape" &&
-            integrationsContextMenu.classList.contains("active")
-        ) {
-            closeIntegrationsMenu();
+        if (e.key === "Escape") {
+            closeAllMenus();
         }
-    });
-
-    // Обработка выбора пункта меню
-    const menuItems = integrationsContextMenu.querySelectorAll(".context-menu-item");
-    menuItems.forEach((item) => {
-        item.addEventListener("click", function () {
-            const integrationName = item.querySelector("span").textContent;
-            console.log("Выбрана интеграция:", integrationName);
-
-            // Показываем уведомление через Telegram Web App
-            if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.showPopup({
-                    title: "Интеграция",
-                    message: `Выбрана интеграция: ${integrationName}`,
-                    buttons: [{ type: "ok" }],
-                });
-            }
-
-            closeIntegrationsMenu();
-        });
     });
 }
 
@@ -222,12 +257,14 @@ function initApp() {
 
         // Обновляем data-атрибут на body и элементах с контентом
         document.body.setAttribute("data-bot-type", selectedBotType);
-        document
-            .querySelector(".category-content")
-            .setAttribute("data-active-content", selectedBotType);
-        document
-            .querySelector(".category-icon")
-            .setAttribute("data-active-content", selectedBotType);
+        
+        // Обновляем все элементы категории
+        document.querySelectorAll(".category-content").forEach(el => {
+            el.setAttribute("data-active-content", selectedBotType);
+        });
+        document.querySelectorAll(".category-icon").forEach(el => {
+            el.setAttribute("data-active-content", selectedBotType);
+        });
 
         // Показываем только активную категорию шаблонов
         document
