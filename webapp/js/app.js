@@ -1,37 +1,3 @@
-// Инициализация Telegram Web App
-function initTelegramWebApp() {
-    // Проверяем, что Telegram Web App доступен
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-
-        console.log("Telegram Web App инициализирован", {
-            platform: tg.platform,
-            version: tg.version,
-            initData: tg.initData,
-        });
-
-        // Основные настройки
-        tg.expand(); // Растягиваем на весь экран
-        tg.disableVerticalSwipes(); // Отключаем свайпы
-        tg.setHeaderColor("#FBC717"); // Устанавливаем цвет хедера
-        tg.setBackgroundColor("#FBC717"); // Устанавливаем цвет фона
-
-        // Дополнительные настройки для лучшего UX
-        tg.enableClosingConfirmation(); // Подтверждение закрытия
-        tg.MainButton.setText("Создать бота"); // Устанавливаем текст кнопки
-
-        // Сообщаем Telegram, что приложение готово
-        tg.ready();
-
-        return tg;
-    } else {
-        console.warn(
-            "Telegram Web App не доступен. Запускаем в режиме браузера."
-        );
-        return null;
-    }
-}
-
 // Функция создания бота
 async function createBot(payload) {
     const response = await fetch("/api/create_bot", {
@@ -215,7 +181,7 @@ function initTemplateSwitcher() {
             // Добавляем активный класс текущей вкладке
             this.classList.add("active");
 
-            // Скрываем все шаблоны и показываем только выбранный
+            // Скрываем все шаблоны и показываем только выбранный   
             templateContainer
                 .querySelectorAll(".bottom-main")
                 .forEach((template) => {
@@ -236,9 +202,6 @@ function initTemplateSwitcher() {
 
 // Основная функция инициализации приложения
 function initApp() {
-    // Инициализируем Telegram Web App
-    const tg = initTelegramWebApp();
-
     // Функционал для выбора типа бота
     const botTypes = document.querySelectorAll(".bot-type");
     let selectedBotType = "stars";
