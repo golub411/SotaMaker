@@ -356,10 +356,37 @@ function initTemplateSwitcher() {
   });
 }
 
+function waitForElement(selector, timeout = 5000) {
+  return new Promise((resolve, reject) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      resolve(element);
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        observer.disconnect();
+        resolve(element);
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    setTimeout(() => {
+      observer.disconnect();
+      reject(new Error(`Element ${selector} not found`));
+    }, timeout);
+  });
+}
 // Основная функция инициализации приложения
-function initApp() {
+async function initApp() {
   // Генерируем все шаблоны из конфига
-  const bottomBlock = document.querySelector('.bottom-block');
+  const bottomBlock = await waitForElement('.bottom-block');
   if (bottomBlock) {
     const templatesHTML = generateTemplatesHTML();
     // Заменяем innerHTML на insertAdjacentHTML
