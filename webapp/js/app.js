@@ -362,7 +362,9 @@ function initApp() {
   const bottomBlock = document.querySelector('.bottom-block');
   if (bottomBlock) {
     const templatesHTML = generateTemplatesHTML();
-    bottomBlock.innerHTML = templatesHTML;
+    // Заменяем innerHTML на insertAdjacentHTML
+    bottomBlock.innerHTML = ''; // Сначала очищаем
+    bottomBlock.insertAdjacentHTML('beforeend', templatesHTML);
   }
 
   // Инициализация выбора типа бота
