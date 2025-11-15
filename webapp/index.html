@@ -100,91 +100,17 @@
     </div>
 
     <script>
-      // Глобальная функция для принудительного рендера
-      window.forceRender = function () {
-        console.log("🔄 Принудительный рендер...");
-        if (window.initApp) {
-          window.initApp();
-        }
-      };
-
-      // Инициализация Telegram Web App с несколькими попытками
+      // Инициализация Telegram Web App
       document.addEventListener("DOMContentLoaded", function () {
-        console.log("📄 DOM загружен");
-
-        // ПОПЫТКА 1: Немедленный рендер
-        setTimeout(() => {
-          console.log("🚀 Попытка 1: Немедленный рендер");
-          if (window.initApp) {
-            window.initApp();
-          }
-        }, 0);
-
-        // Инициализация Telegram Web App
         if (window.Telegram && window.Telegram.WebApp) {
-          try {
-            const tg = window.Telegram.WebApp;
-            tg.expand();
-            tg.disableVerticalSwipes();
-            tg.setHeaderColor("#FBC717");
-            tg.setBackgroundColor("#FBC717");
-            tg.ready();
-            console.log("✅ Telegram Web App инициализирован");
-          } catch (e) {
-            console.error("❌ Ошибка инициализации Telegram:", e);
-          }
+          const tg = window.Telegram.WebApp;
+          tg.expand();
+          tg.disableVerticalSwipes();
+          tg.setHeaderColor("#FBC717");
+          tg.setBackgroundColor("#FBC717");
+          tg.ready();
+          console.log("Telegram Web App инициализирован");
         }
-
-        // ПОПЫТКА 2: После небольшой задержки
-        setTimeout(() => {
-          console.log("🔄 Попытка 2: Рендер через 100мс");
-          if (window.initApp) {
-            window.initApp();
-          }
-        }, 100);
-
-        // ПОПЫТКА 3: Дополнительная попытка для Telegram
-        setTimeout(() => {
-          console.log("⏰ Попытка 3: Рендер через 500мс");
-          if (window.initApp) {
-            window.initApp();
-          }
-
-          // Если в Telegram всё еще не видно контента, покажем кнопку для принудительного рендера
-          if (window.Telegram && window.Telegram.WebApp) {
-            const bottomBlock = document.querySelector(".bottom-block");
-            if (bottomBlock && bottomBlock.innerHTML.trim() === "") {
-              console.log(
-                "⚠️ В Telegram пустой bottomBlock, добавляем кнопку восстановления"
-              );
-              bottomBlock.innerHTML = `
-            <div style="text-align: center; padding: 40px 20px;">
-              <h3>Контент не загрузился</h3>
-              <button onclick="window.forceRender()" style="
-                background: #FBC717; 
-                border: none; 
-                padding: 12px 24px; 
-                border-radius: 8px; 
-                font-size: 16px; 
-                cursor: pointer;
-                margin-top: 16px;
-              ">Загрузить шаблоны</button>
-            </div>
-          `;
-            }
-          }
-        }, 500);
-      });
-
-      // ПОПЫТКА 4: При полной загрузке страницы
-      window.addEventListener("load", function () {
-        console.log("📦 Страница полностью загружена");
-        setTimeout(() => {
-          console.log("🎯 Попытка 4: Рендер после полной загрузки");
-          if (window.initApp) {
-            window.initApp();
-          }
-        }, 200);
       });
     </script>
 

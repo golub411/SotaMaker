@@ -1,9 +1,3 @@
-// Проверка конфигурации
-console.log('🔧 CATEGORY_CONFIG загружен:', Object.keys(CATEGORY_CONFIG));
-Object.entries(CATEGORY_CONFIG).forEach(([category, config]) => {
-  console.log(`📁 Категория ${category}:`, config.templates ? Object.keys(config.templates) : 'нет шаблонов');
-});
-
 const CATEGORY_CONFIG = {
   stars: {
     name: "Звёзды и NFT",
@@ -48,7 +42,7 @@ const CATEGORY_CONFIG = {
     icon: "static/UI/staricon.png", 
     templates: {
       "games-default": {
-        title: "Игровой бот",
+        title: "Игровой бot",
         description: "Игровой бот с системой достижений и рейтингов. <strong>Мультиплеерные игры</strong> и <strong>виртуальная экономика</strong>."
       }
     }
@@ -63,12 +57,8 @@ const INTEGRATIONS = [
 
 // Генерация HTML для category-intgr
 function generateCategoryIntegrationHTML(category) {
-  console.log(`🛠️ Генерация category-intgr для: ${category}`);
   const config = CATEGORY_CONFIG[category];
-  if (!config) {
-    console.error(`❌ Конфиг не найден для категории: ${category}`);
-    return '';
-  }
+  if (!config) return '';
 
   return `
     <div class="category-intgr" data-category="${category}">
@@ -110,23 +100,12 @@ function generateCategoryIntegrationHTML(category) {
 }
 
 function generateTemplatesHTML() {
-  console.log('🛠️ Начало генерации шаблонов');
-  
   let html = '';
   
   Object.entries(CATEGORY_CONFIG).forEach(([category, config]) => {
-    console.log(`📋 Генерация категории: ${category}`);
-    
-    if (!config.templates || Object.keys(config.templates).length === 0) {
-      console.warn(`⚠️ Нет шаблонов для категории: ${category}`);
-      return;
-    }
-    
     html += `
       <div class="templates-container" data-category="${category}">
-        ${Object.entries(config.templates).map(([templateId, template], index) => {
-          console.log(`📄 Генерация шаблона: ${templateId}`);
-          return `
+        ${Object.entries(config.templates).map(([templateId, template], index) => `
           <div class="bottom-main ${index === 0 ? 'active' : ''}" data-template="${templateId}">
             ${generateCategoryIntegrationHTML(category)}
             
@@ -140,19 +119,16 @@ function generateTemplatesHTML() {
               </div>
             </div>
           </div>
-        `}).join('')}
+        `).join('')}
       </div>
     `;
   });
   
-  console.log('✅ Генерация шаблонов завершена, длина HTML:', html.length);
   return html;
 }
 
 // Функция создания бота
 async function createBot(payload) {
-  console.log('🚀 Отправка запроса на создание бота:', payload);
-  
   const response = await fetch("/api/create_bot", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -181,15 +157,7 @@ function setButtonLoading(button, isLoading) {
 
 // Функция создания бота с обработкой загрузки
 async function handleCreateBot() {
-  console.log('👆 Обработка создания бота');
-  
   const activeTemplate = document.querySelector(".bottom-main.active");
-  if (!activeTemplate) {
-    console.error('❌ Активный шаблон не найден');
-    showAlert("❌ Ошибка: активный шаблон не найден");
-    return;
-  }
-
   const tokenInput = activeTemplate.querySelector('.form input[type="text"]');
   const createButton = activeTemplate.querySelector(".button.create");
   const token = tokenInput.value.trim();
@@ -197,10 +165,12 @@ async function handleCreateBot() {
   const selectedBotType = document.body.getAttribute("data-bot-type");
   const selectedTemplate = activeTemplate.getAttribute("data-template");
 
-  console.log('📝 Данные для создания:', { selectedBotType, selectedTemplate, tokenLength: token.length });
-
   if (!token) {
-    showAlert("❌ Пожалуйста, введите токен бота от @BotFather");
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.showAlert("❌ Пожалуйста, введите токен бота от @BotFather");
+    } else {
+      alert("❌ Пожалуйста, введите токен бота от @BotFather");
+    }
     return;
   }
 
@@ -219,13 +189,22 @@ async function handleCreateBot() {
     const createPromise = createBot(payload);
     const [result] = await Promise.all([createPromise, minLoadTime]);
 
-    console.log('✅ Бот создан успешно:', result);
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.showAlert(
+        `✅ Бот успешно создан!\nUsername: @${result.bot_username}`
+      );
+    } else {
+      alert(`✅ Бот успешно создан!\nUsername: @${result.bot_username}`);
+    }
 
-    showAlert(`✅ Бот успешно создан!\nUsername: @${result.bot_username}`);
     tokenInput.value = "";
   } catch (error) {
     console.error("Ошибка создания бота:", error);
-    showAlert(`❌ Ошибка: ${error.message}`);
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.showAlert(`❌ Ошибка: ${error.message}`);
+    } else {
+      alert(`❌ Ошибка: ${error.message}`);
+    }
   } finally {
     setButtonLoading(createButton, false);
   }
@@ -233,33 +212,15 @@ async function handleCreateBot() {
 
 // Функционал для контекстного меню интеграций
 function initIntegrationsMenu() {
-  console.log('🎯 Инициализация меню интеграций');
-  
   const contextOverlay = document.getElementById("contextOverlay");
-  if (!contextOverlay) {
-    console.error('❌ contextOverlay не найден');
-    return;
-  }
   
   // Находим все контейнеры интеграций
   const integrationContainers = document.querySelectorAll(".integration-container");
-  console.log('🎯 Найдено контейнеров интеграций:', integrationContainers.length);
-
-  if (integrationContainers.length === 0) {
-    console.warn('⚠️ Контейнеры интеграций не найдены');
-    return;
-  }
 
   function toggleIntegrationsMenu(container) {
     const integrationsContextMenu = container.querySelector(".integrations-context-menu");
     const arrowWhite = container.querySelector(".arrow.white");
     const arrowBlack = container.querySelector(".arrow.black");
-    
-    if (!integrationsContextMenu) {
-      console.error('❌ integrationsContextMenu не найден');
-      return;
-    }
-    
     const isActive = integrationsContextMenu.classList.contains("active");
 
     // Закрываем все остальные открытые меню
@@ -267,11 +228,9 @@ function initIntegrationsMenu() {
       if (menu !== integrationsContextMenu) {
         menu.classList.remove("active");
         const parentContainer = menu.closest('.integration-container');
-        if (parentContainer) {
-          parentContainer.querySelectorAll('.arrow.white.open, .arrow.black.open').forEach(arrow => {
-            arrow.classList.remove("open");
-          });
-        }
+        parentContainer.querySelectorAll('.arrow.white.open, .arrow.black.open').forEach(arrow => {
+          arrow.classList.remove("open");
+        });
       }
     });
 
@@ -291,8 +250,6 @@ function initIntegrationsMenu() {
     contextOverlay.classList.add("active");
     if (arrowWhite) arrowWhite.classList.add("open");
     if (arrowBlack) arrowBlack.classList.add("open");
-    
-    console.log('📌 Меню интеграций открыто');
   }
 
   function closeIntegrationsMenu(container) {
@@ -310,11 +267,9 @@ function initIntegrationsMenu() {
     document.querySelectorAll(".integrations-context-menu.active").forEach(menu => {
       menu.classList.remove("active");
       const container = menu.closest('.integration-container');
-      if (container) {
-        container.querySelectorAll('.arrow.white.open, .arrow.black.open').forEach(arrow => {
-          arrow.classList.remove("open");
-        });
-      }
+      container.querySelectorAll('.arrow.white.open, .arrow.black.open').forEach(arrow => {
+        arrow.classList.remove("open");
+      });
     });
     contextOverlay.classList.remove("active");
   }
@@ -324,14 +279,8 @@ function initIntegrationsMenu() {
     const integrationButton = container.querySelector(".integration");
     const integrationsContextMenu = container.querySelector(".integrations-context-menu");
 
-    if (!integrationButton || !integrationsContextMenu) {
-      console.warn('⚠️ Элементы меню не найдены в контейнере');
-      return;
-    }
-
     integrationButton.addEventListener("click", function (e) {
       e.stopPropagation();
-      console.log('👆 Клик по кнопке интеграций');
       toggleIntegrationsMenu(container);
     });
 
@@ -342,7 +291,15 @@ function initIntegrationsMenu() {
         const integrationName = item.querySelector("span").textContent;
         console.log("Выбрана интеграция:", integrationName);
 
-        showPopup("Интеграция", `Выбрана интеграция: ${integrationName}`);
+        // Показываем уведомление через Telegram Web App
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.showPopup({
+            title: "Интеграция",
+            message: `Выбрана интеграция: ${integrationName}`,
+            buttons: [{ type: "ok" }],
+          });
+        }
+
         closeIntegrationsMenu(container);
       });
     });
@@ -365,23 +322,14 @@ function initIntegrationsMenu() {
       closeAllMenus();
     }
   });
-  
-  console.log('✅ Меню интеграций инициализировано');
 }
 
 // Функционал для переключения шаблонов
 function initTemplateSwitcher() {
-  console.log('🔄 Инициализация переключателя шаблонов');
-  
-  const templateTabs = document.querySelectorAll(".template-tab");
-  console.log('🔄 Найдено вкладок шаблонов:', templateTabs.length);
-
-  templateTabs.forEach((tab) => {
+  document.querySelectorAll(".template-tab").forEach((tab) => {
     tab.addEventListener("click", function () {
       const templateContainer = this.closest(".templates-container");
       const templateId = this.getAttribute("data-template");
-      
-      console.log('👆 Клик по вкладке шаблона:', templateId);
 
       // Убираем активный класс у всех вкладок
       templateContainer.querySelectorAll(".template-tab").forEach((t) => {
@@ -401,242 +349,86 @@ function initTemplateSwitcher() {
       );
       if (activeTemplate) {
         activeTemplate.classList.add("active");
-        console.log('✅ Активирован шаблон:', templateId);
-      } else {
-        console.error('❌ Шаблон не найден:', templateId);
       }
+
+      console.log("Выбран шаблон:", templateId);
     });
   });
-}
-
-// Инициализация переключателя темы
-function initThemeSwitch() {
-  console.log('🌗 Инициализация переключателя темы');
-  
-  const themeSwitch = document.getElementById('themeSwitch');
-  if (themeSwitch) {
-    themeSwitch.addEventListener('click', function() {
-      console.log('👆 Клик по переключателю темы');
-      document.body.classList.toggle('dark-theme');
-      document.body.classList.toggle('light-theme');
-      
-      const isDark = document.body.classList.contains('dark-theme');
-      console.log(`🌗 Тема изменена на: ${isDark ? 'тёмная' : 'светлая'}`);
-    });
-    console.log('✅ Переключатель темы инициализирован');
-  } else {
-    console.warn('⚠️ Переключатель темы не найден');
-  }
-}
-
-// Вспомогательная функция для показа уведомлений
-function showAlert(message) {
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.showAlert(message);
-  } else {
-    alert(message);
-  }
-}
-
-// Вспомогательная функция для показа popup
-function showPopup(title, message) {
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.showPopup({
-      title: title,
-      message: message,
-      buttons: [{ type: "ok" }],
-    });
-  } else {
-    alert(`${title}: ${message}`);
-  }
-}
-
-// Вспомогательная функция для показа ошибок
-function showError(message) {
-  const bottomBlock = document.querySelector('.bottom-block');
-  if (bottomBlock) {
-    bottomBlock.innerHTML = `
-      <div style="text-align: center; padding: 40px 20px; color: #ff4444;">
-        <h3>❌ Ошибка</h3>
-        <p>${message}</p>
-        <button onclick="window.forceRender()" style="
-          background: #FBC717; 
-          border: none; 
-          padding: 12px 24px; 
-          border-radius: 8px; 
-          font-size: 16px; 
-          cursor: pointer;
-          margin-top: 16px;
-        ">Попробовать снова</button>
-      </div>
-    `;
-  }
-}
-
-// Функция рендера шаблонов
-function renderTemplates() {
-  console.log('🎨 Рендер шаблонов...');
-  
-  const bottomBlock = document.querySelector('.bottom-block');
-  if (!bottomBlock) {
-    console.error('❌ bottomBlock не найден');
-    return;
-  }
-
-  const templatesHTML = generateTemplatesHTML();
-  console.log('📦 Сгенерировано символов:', templatesHTML.length);
-  
-  if (!templatesHTML || templatesHTML.trim().length === 0) {
-    console.error('❌ templatesHTML пустой');
-    return;
-  }
-
-  bottomBlock.innerHTML = templatesHTML;
-  console.log('✅ Шаблоны вставлены в DOM');
-  
-  // Проверяем результат
-  const templatesContainers = document.querySelectorAll('.templates-container');
-  console.log('📁 Контейнеров создано:', templatesContainers.length);
-  
-  // Сразу показываем активную категорию
-  showActiveCategory();
-}
-
-// Показ активной категории
-function showActiveCategory() {
-  const selectedBotType = document.body.getAttribute("data-bot-type") || "stars";
-  const templatesContainers = document.querySelectorAll(".templates-container");
-  
-  console.log('👀 Показ категории:', selectedBotType);
-  
-  templatesContainers.forEach((container) => {
-    const containerCategory = container.getAttribute("data-category");
-    const shouldShow = containerCategory === selectedBotType;
-    container.style.display = shouldShow ? "block" : "none";
-    console.log(`📦 ${containerCategory}: ${shouldShow ? 'ПОКАЗАН' : 'скрыт'}`);
-  });
-}
-
-// Инициализация всех обработчиков
-function initializeHandlers() {
-  console.log('⚙️ Инициализация обработчиков...');
-  
-  // Обработчики выбора типа бота
-  const botTypes = document.querySelectorAll(".bot-type");
-  console.log('⭐ Найдено типов ботов:', botTypes.length);
-  
-  botTypes.forEach((type) => {
-    type.addEventListener("click", function () {
-      const botTypeValue = this.getAttribute("data-bot-type");
-      console.log('👆 Клик по типу бота:', botTypeValue);
-      
-      if (this.classList.contains("disabled")) {
-        console.log('⏸️ Тип бота отключен:', botTypeValue);
-        return;
-      }
-      
-      // Обновляем активное состояние
-      botTypes.forEach(t => t.classList.remove("active"));
-      this.classList.add("active");
-      document.body.setAttribute("data-bot-type", botTypeValue);
-      
-      // Показываем соответствующую категорию
-      showActiveCategory();
-      
-      console.log('✅ Выбран тип бота:', botTypeValue);
-    });
-  });
-
-  // Обработчики создания бота
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('.button.create')) {
-      console.log('👆 Клик по кнопке создания бота');
-      handleCreateBot();
-    }
-  });
-
-  // Обработчики демо-доступа
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('.button.demo')) {
-      e.preventDefault();
-      console.log('👆 Клик по демо-доступу');
-      showAlert("🚀 Демо-доступ будет доступен в следующем обновлении!");
-    }
-  });
-
-  // Инициализация меню интеграций
-  try {
-    initIntegrationsMenu();
-    console.log('✅ Меню интеграций инициализировано');
-  } catch (e) {
-    console.error('❌ Ошибка инициализации меню интеграций:', e);
-  }
-  
-  // Инициализация переключателя шаблонов
-  try {
-    initTemplateSwitcher();
-    console.log('✅ Переключатель шаблонов инициализирован');
-  } catch (e) {
-    console.error('❌ Ошибка инициализации переключателя шаблонов:', e);
-  }
-  
-  // Инициализация переключателя темы
-  try {
-    initThemeSwitch();
-    console.log('✅ Переключатель темы инициализирован');
-  } catch (e) {
-    console.error('❌ Ошибка инициализации переключателя темы:', e);
-  }
 }
 
 // Основная функция инициализации приложения
 function initApp() {
-  console.log('🚀 initApp вызвана', new Date().toISOString());
-  
-  try {
-    // Всегда рендерим шаблоны заново
-    renderTemplates();
-    
-    // Инициализируем обработчики только один раз
-    if (!window.handlersInitialized) {
-      initializeHandlers();
-      window.handlersInitialized = true;
-      console.log('✅ Обработчики инициализированы');
+  // Генерируем все шаблоны из конфига
+  const bottomBlock = document.querySelector('.bottom-block');
+  if (bottomBlock) {
+    const templatesHTML = generateTemplatesHTML();
+    bottomBlock.innerHTML = templatesHTML;
+  }
+
+  // Инициализация выбора типа бота
+  const botTypes = document.querySelectorAll(".bot-type");
+  let selectedBotType = "stars";
+
+  function updateActiveState(selectedType) {
+    // Обновляем кнопки выбора типа
+    botTypes.forEach((type) => {
+      const botTypeValue = type.getAttribute("data-bot-type");
+      if (botTypeValue === selectedType && !type.classList.contains("disabled")) {
+        type.classList.add("active");
+        selectedBotType = selectedType;
+      } else {
+        type.classList.remove("active");
+      }
+    });
+
+    // Обновляем data-атрибут
+    document.body.setAttribute("data-bot-type", selectedBotType);
+
+    // Показываем только активную категорию
+    document.querySelectorAll(".templates-container").forEach((container) => {
+      container.style.display = container.getAttribute("data-category") === selectedBotType ? "block" : "none";
+    });
+
+    console.log("Выбран тип бота:", selectedBotType);
+  }
+
+  // Обработчики для кнопок выбора типа
+  botTypes.forEach((type) => {
+    type.addEventListener("click", function () {
+      const botTypeValue = this.getAttribute("data-bot-type");
+      if (this.classList.contains("disabled")) return;
+      updateActiveState(botTypeValue);
+    });
+  });
+
+  // Инициализация
+  updateActiveState(selectedBotType);
+  initIntegrationsMenu();
+  initTemplateSwitcher();
+
+  // Обработчик создания бота
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.button.create')) {
+      handleCreateBot();
     }
-    
-    console.log('✅ Рендер завершен успешно');
-    
-  } catch (error) {
-    console.error('❌ Ошибка в initApp:', error);
-    showError('Ошибка загрузки шаблонов');
+  });
+
+  // Инициализация темы
+  initThemeSwitch();
+}
+
+// Инициализация переключателя темы
+function initThemeSwitch() {
+  const themeSwitch = document.getElementById('themeSwitch');
+  if (themeSwitch) {
+    themeSwitch.addEventListener('click', function() {
+      document.body.classList.toggle('dark-theme');
+      document.body.classList.toggle('light-theme');
+    });
   }
 }
 
-// Сделаем функции глобальными
-window.initApp = initApp;
-window.forceRender = initApp; // alias для обратной совместимости
-window.renderTemplates = renderTemplates;
-
-// Автоматический вызов при загрузке скрипта
-console.log('📦 app.js загружен');
-console.log('🔧 CATEGORY_CONFIG:', Object.keys(CATEGORY_CONFIG));
-
-// Немедленная попытка инициализации
-setTimeout(() => {
-  console.log('⚡ Автоматический запуск initApp из app.js');
-  if (window.initApp) {
-    window.initApp();
-  }
-}, 50);
-
-// Экспорт для тестирования
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    CATEGORY_CONFIG,
-    INTEGRATIONS,
-    generateCategoryIntegrationHTML,
-    generateTemplatesHTML,
-    initApp,
-    renderTemplates
-  };
-}
+// Запуск приложения
+document.addEventListener("DOMContentLoaded", function() {
+  initApp();
+});
