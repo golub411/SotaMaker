@@ -1,11 +1,36 @@
 // Инициализация Telegram Web App
-const tg = window.Telegram.WebApp;
+function initTelegramWebApp() {
+    // Проверяем, что Telegram Web App доступен
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
 
-// Инициализируем приложение
-tg.expand();
-tg.disableVerticalSwipes();
-tg.setHeaderColor('#FBC717');
+        console.log("Telegram Web App инициализирован", {
+            platform: tg.platform,
+            version: tg.version,
+            initData: tg.initData,
+        });
 
+        // Основные настройки
+        tg.expand(); // Растягиваем на весь экран
+        tg.disableVerticalSwipes(); // Отключаем свайпы
+        tg.setHeaderColor("#FBC717"); // Устанавливаем цвет хедера
+        tg.setBackgroundColor("#FBC717"); // Устанавливаем цвет фона
+
+        // Дополнительные настройки для лучшего UX
+        tg.enableClosingConfirmation(); // Подтверждение закрытия
+        tg.MainButton.setText("Создать бота"); // Устанавливаем текст кнопки
+
+        // Сообщаем Telegram, что приложение готово
+        tg.ready();
+
+        return tg;
+    } else {
+        console.warn(
+            "Telegram Web App не доступен. Запускаем в режиме браузера."
+        );
+        return null;
+    }
+}
 
 // Функция создания бота
 async function createBot(payload) {
@@ -37,61 +62,262 @@ function setButtonLoading(button, isLoading) {
 
 // Функция создания бота с обработкой загрузки
 async function handleCreateBot() {
-    const tokenInput = document.querySelector('.form input[type="text"]');
-    const createButton = document.querySelector('.button.create');
+    const activeTemplate = document.querySelector(".bottom-main.active");
+    const tokenInput = activeTemplate.querySelector(
+        '.form input[type="text"]'
+    );
+    const createButton = activeTemplate.querySelector(".button.create");
     const token = tokenInput.value.trim();
-    
-    // Получаем выбранный тип бота
-    const selectedBotType = document.body.getAttribute('data-bot-type');
 
-    // Проверяем токен
+    const selectedBotType = document.body.getAttribute("data-bot-type");
+    const selectedTemplate = activeTemplate.getAttribute("data-template");
+
     if (!token) {
-        tg.showAlert('❌ Пожалуйста, введите токен бота от @BotFather');
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.showAlert("❌ Пожалуйста, введите токен бота от @BotFather");
+        } else {
+            alert("❌ Пожалуйста, введите токен бота от @BotFather");
+        }
         return;
     }
 
-    // Показываем загрузку
     setButtonLoading(createButton, true);
 
     try {
-        // Минимальное время загрузки - 0.3 секунды
         const minLoadTime = new Promise(resolve => setTimeout(resolve, 300));
-        
-        // Создаем payload
+
         const payload = {
             token: token,
-            template: selectedBotType,
-            initData: tg.initData
+            category: selectedBotType,
+            template: selectedTemplate,
+            initData: window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp.initData : null,
         };
 
-        // Отправляем запрос
         const createPromise = createBot(payload);
-        
-        // Ждем минимум 0.3 секунды
         const [result] = await Promise.all([createPromise, minLoadTime]);
 
-        // Показываем успех
-        tg.showAlert(`✅ Бот успешно создан!\nUsername: @${result.bot_username}`);
-        
-        // Очищаем поле ввода
-        tokenInput.value = '';
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.showAlert(
+                `✅ Бот успешно создан!\nUsername: @${result.bot_username}`
+            );
+        } else {
+            alert(
+                `✅ Бот успешно создан!\nUsername: @${result.bot_username}`
+            );
+        }
 
+        tokenInput.value = "";
     } catch (error) {
-        console.error('Ошибка создания бота:', error);
-        tg.showAlert(`❌ Ошибка: ${error.message}`);
+        console.error("Ошибка создания бота:", error);
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.showAlert(`❌ Ошибка: ${error.message}`);
+        } else {
+            alert(`❌ Ошибка: ${error.message}`);
+        }
     } finally {
-        // Убираем загрузку
         setButtonLoading(createButton, false);
     }
 }
 
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    // Добавляем обработчик на кнопку "Создать"
-    const createButton = document.querySelector('.button.create');
-    if (createButton) {
-        createButton.addEventListener('click', handleCreateBot);
-    }
-});
+// Функционал для контекстного меню интеграций
+function initIntegrationsMenu() {
+    const integrationButton = document.getElementById("integrationButton");
+    const integrationsContextMenu = document.getElementById(
+        "integrationsContextMenu"
+    );
+    const contextOverlay = document.getElementById("contextOverlay");
+    const arrowWhite = document.querySelector(".arrow.white");
+    const arrowBlack = document.querySelector(".arrow.black");
 
-     
+    function toggleIntegrationsMenu() {
+        const isActive = integrationsContextMenu.classList.contains("active");
+
+        if (isActive) {
+            closeIntegrationsMenu();
+        } else {
+            openIntegrationsMenu();
+        }
+    }
+
+    function openIntegrationsMenu() {
+        integrationsContextMenu.classList.add("active");
+        contextOverlay.classList.add("active");
+        arrowWhite.classList.add("open");
+        arrowBlack.classList.add("open");
+    }
+
+    function closeIntegrationsMenu() {
+        integrationsContextMenu.classList.remove("active");
+        contextOverlay.classList.remove("active");
+        arrowWhite.classList.remove("open");
+        arrowBlack.classList.remove("open");
+    }
+
+    integrationButton.addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleIntegrationsMenu();
+    });
+
+    // Закрытие меню при клике вне его
+    contextOverlay.addEventListener("click", closeIntegrationsMenu);
+    document.addEventListener("click", closeIntegrationsMenu);
+
+    // Предотвращаем закрытие при клике внутри меню
+    integrationsContextMenu.addEventListener("click", function (e) {
+        e.stopPropagation();
+    });
+
+    // Закрытие по ESC
+    document.addEventListener("keydown", function (e) {
+        if (
+            e.key === "Escape" &&
+            integrationsContextMenu.classList.contains("active")
+        ) {
+            closeIntegrationsMenu();
+        }
+    });
+
+    // Обработка выбора пункта меню
+    const menuItems = integrationsContextMenu.querySelectorAll(".context-menu-item");
+    menuItems.forEach((item) => {
+        item.addEventListener("click", function () {
+            const integrationName = item.querySelector("span").textContent;
+            console.log("Выбрана интеграция:", integrationName);
+
+            // Показываем уведомление через Telegram Web App
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.showPopup({
+                    title: "Интеграция",
+                    message: `Выбрана интеграция: ${integrationName}`,
+                    buttons: [{ type: "ok" }],
+                });
+            }
+
+            closeIntegrationsMenu();
+        });
+    });
+}
+
+// Функционал для переключения шаблонов
+function initTemplateSwitcher() {
+    document.querySelectorAll(".template-tab").forEach((tab) => {
+        tab.addEventListener("click", function () {
+            const templateContainer = this.closest(".templates-container");
+            const templateId = this.getAttribute("data-template");
+
+            // Убираем активный класс у всех вкладок
+            templateContainer
+                .querySelectorAll(".template-tab")
+                .forEach((t) => {
+                    t.classList.remove("active");
+                });
+
+            // Добавляем активный класс текущей вкладке
+            this.classList.add("active");
+
+            // Скрываем все шаблоны и показываем только выбранный
+            templateContainer
+                .querySelectorAll(".bottom-main")
+                .forEach((template) => {
+                    template.classList.remove("active");
+                });
+
+            const activeTemplate = templateContainer.querySelector(
+                `.bottom-main[data-template="${templateId}"]`
+            );
+            if (activeTemplate) {
+                activeTemplate.classList.add("active");
+            }
+
+            console.log("Выбран шаблон:", templateId);
+        });
+    });
+}
+
+// Основная функция инициализации приложения
+function initApp() {
+    // Инициализируем Telegram Web App
+    const tg = initTelegramWebApp();
+
+    // Функционал для выбора типа бота
+    const botTypes = document.querySelectorAll(".bot-type");
+    let selectedBotType = "stars";
+
+    function updateActiveState(selectedType) {
+        botTypes.forEach((type) => {
+            const botTypeValue = type.getAttribute("data-bot-type");
+            if (
+                botTypeValue === selectedType &&
+                !type.classList.contains("disabled")
+            ) {
+                type.classList.add("active");
+                selectedBotType = selectedType;
+            } else {
+                type.classList.remove("active");
+            }
+        });
+
+        // Обновляем data-атрибут на body и элементах с контентом
+        document.body.setAttribute("data-bot-type", selectedBotType);
+        document
+            .querySelector(".category-content")
+            .setAttribute("data-active-content", selectedBotType);
+        document
+            .querySelector(".category-icon")
+            .setAttribute("data-active-content", selectedBotType);
+
+        // Показываем только активную категорию шаблонов
+        document
+            .querySelectorAll(".templates-container")
+            .forEach((container) => {
+                if (container.getAttribute("data-category") === selectedBotType) {
+                    container.style.display = "block";
+                } else {
+                    container.style.display = "none";
+                }
+            });
+
+        if (typeof store !== "undefined") {
+            store.state.selectedBotType = selectedBotType;
+        }
+        console.log("Выбран тип бота:", selectedBotType);
+    }
+
+    botTypes.forEach((type) => {
+        type.addEventListener("click", function () {
+            const botTypeValue = this.getAttribute("data-bot-type");
+            if (this.classList.contains("disabled")) return;
+            updateActiveState(botTypeValue);
+        });
+    });
+
+    updateActiveState(selectedBotType);
+    initTemplateSwitcher();
+
+    if (typeof store !== "undefined") {
+        if (store.state.selectedBotType) {
+            updateActiveState(store.state.selectedBotType);
+        }
+        store.subscribe((state) => {
+            if (
+                state.selectedBotType &&
+                state.selectedBotType !== selectedBotType
+            ) {
+                updateActiveState(state.selectedBotType);
+            }
+        });
+    }
+
+    // Инициализируем меню интеграций
+    initIntegrationsMenu();
+
+    // Добавляем обработчик на кнопку "Создать" для всех активных шаблонов
+    document
+        .querySelectorAll(".bottom-main.active .button.create")
+        .forEach((button) => {
+            button.addEventListener("click", handleCreateBot);
+        });
+}
+
+// Инициализируем при загрузке DOM
+document.addEventListener("DOMContentLoaded", initApp);

@@ -229,10 +229,12 @@ document.addEventListener('change', function(e) {
     }
 });
 
-const themeSwitch = document.getElementById('themeSwitch');
-
-if (themeSwitch) {
-  themeSwitch.addEventListener('click', () => {
-    store.toggleTheme();
-  });
-}
+// Обработчик переключения темы
+document.addEventListener('DOMContentLoaded', function() {
+    const themeSwitch = document.getElementById('themeSwitch');
+    if (themeSwitch) {
+        themeSwitch.addEventListener('click', () => {
+            store.toggleTheme();
+        });
+    }
+});
