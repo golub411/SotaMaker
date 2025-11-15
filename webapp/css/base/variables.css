@@ -6,3 +6,11 @@
   --font-family-Unbounded-reg: "UnboundedReg";
   --font-family-InterTight-reg: "InterTightReg";
 }
+:root {
+  /* Размеры текстов */
+  --h1-font-size: 10.76vw;
+  --p-font-size: 4.1vw;
+
+  /* Остальные существующие переменные */
+  --bg-bottom-block: /* значение */ ;
+}

@@ -17,22 +17,21 @@
 }
 
 .bottom-main > h1 {
-  font-size: 10.76vw;
+  font-size: var(--h1-font-size);
   line-height: 1;
   letter-spacing: 1px;
 }
 
 .bottom-main > p {
-  font-size: 4.1vw;
+  font-size: var(--p-font-size);
   line-height: 1.4;
 }
 
-/* Стили для динамического изменения контента */
+/* Остальные стили остаются без изменений */
 .content-switcher {
   display: none;
 }
 
-/* Показываем контент в зависимости от выбранного типа бота */
 [data-bot-type="stars"] .content-stars,
 [data-bot-type="movies"] .content-movies,
 [data-bot-type="shops"] .content-shops,
@@ -40,12 +39,10 @@
   display: block;
 }
 
-/* Скрываем весь контент по умолчанию */
 .bot-content {
   display: none;
 }
 
-/* Показываем активный контент */
 .bottom-main[data-active-content] .bot-content {
   display: none;
 }
@@ -57,7 +54,6 @@
   display: block;
 }
 
-/* Для category-content */
 .category-content .bot-content {
   display: none;
 }
@@ -69,7 +65,6 @@
   display: inline;
 }
 
-/* Стили для иконок категории */
 .category-icon {
   position: relative;
   width: 6.2vw;
