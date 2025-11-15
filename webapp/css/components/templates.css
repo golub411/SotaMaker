@@ -1,0 +1,99 @@
+.bottom-block {
+  width: 100%;
+  margin-top: 12.56vw;
+  background-color: var(--bg-bottom-block);
+  border-top-left-radius: 6.4vw;
+  border-top-right-radius: 6.4vw;
+  box-shadow: 0px -1px 22px 2px #edcf3630;
+  padding: 5.12vw 4vw;
+  transition: background-color 0.3s ease;
+}
+
+.bottom-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10.25vw;
+  margin-bottom: 90px;
+}
+
+.bottom-main > h1 {
+  font-size: 10.76vw;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.bottom-main > p {
+  font-size: 4.1vw;
+  line-height: 1.4;
+}
+
+/* Стили для динамического изменения контента */
+.content-switcher {
+  display: none;
+}
+
+/* Показываем контент в зависимости от выбранного типа бота */
+[data-bot-type="stars"] .content-stars,
+[data-bot-type="movies"] .content-movies,
+[data-bot-type="shops"] .content-shops,
+[data-bot-type="games"] .content-games {
+  display: block;
+}
+
+/* Скрываем весь контент по умолчанию */
+.bot-content {
+  display: none;
+}
+
+/* Показываем активный контент */
+.bottom-main[data-active-content] .bot-content {
+  display: none;
+}
+
+.bottom-main[data-active-content="stars"] .content-stars,
+.bottom-main[data-active-content="movies"] .content-movies,
+.bottom-main[data-active-content="shops"] .content-shops,
+.bottom-main[data-active-content="games"] .content-games {
+  display: block;
+}
+
+/* Для category-content */
+.category-content .bot-content {
+  display: none;
+}
+
+.category-content[data-active-content="stars"] .content-stars,
+.category-content[data-active-content="movies"] .content-movies,
+.category-content[data-active-content="shops"] .content-shops,
+.category-content[data-active-content="games"] .content-games {
+  display: inline;
+}
+
+/* Стили для иконок категории */
+.category-icon {
+  position: relative;
+  width: 6.2vw;
+  height: 6.2vw;
+}
+
+.category-icon .bot-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.category-icon[data-active-content="stars"] .content-stars,
+.category-icon[data-active-content="movies"] .content-movies,
+.category-icon[data-active-content="shops"] .content-shops,
+.category-icon[data-active-content="games"] .content-games {
+  display: block;
+}
+
+.category-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

@@ -1,0 +1,54 @@
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-InterTight-reg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5;
+}
+
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  z-index: -1;
+  user-select: none;
+}
+
+/* Светлый фон виден по умолчанию, тёмный скрыт */
+.light-bg {
+  opacity: 1;
+}
+
+.dark-bg {
+  opacity: 0;
+}
+
+/* В тёмной теме наоборот */
+[data-theme="dark"] .light-bg {
+  opacity: 0;
+}
+
+[data-theme="dark"] .dark-bg {
+  opacity: 1;
+}
+
+.layout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.container {
+  width: 100vw;
+  max-width: 430px;
+  position: relative;
+  height: 100%;
+}
+
+.top-content {
+  padding: 4vw;
+}

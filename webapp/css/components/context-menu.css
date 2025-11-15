@@ -1,0 +1,106 @@
+/* ========================= */
+/* 🎯 Контекстное меню интеграций */
+/* ========================= */
+.integrations-context-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 2vw;
+  background: var(--bg-popup);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 3.84vw;
+  box-shadow: 0 0.8vw 3.2vw rgba(0, 0, 0, 0.15);
+  padding: 1vw 0;
+  min-width: 40vw;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-1vw) scale(0.95);
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.integrations-context-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 2.5vw;
+  padding: 1.5vw 3vw;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.context-menu-icon {
+  width: 5.12vw;
+  height: 5.12vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.context-menu-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 1vw;
+  object-fit: cover;
+}
+
+.context-menu-item span {
+  font-size: 3.58vw;
+  color: var(--text-primary);
+  font-family: var(--font-family-InterTight-reg);
+}
+
+/* Контейнер для кнопки с меню */
+.integration-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Стрелочка к меню */
+.context-menu-arrow {
+  position: absolute;
+  bottom: 100%;
+  right: 3vw;
+  width: 0;
+  height: 0;
+  border-left: 1.28vw solid transparent;
+  border-right: 1.28vw solid transparent;
+  border-bottom: 1.28vw solid var(--bg-popup);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.integrations-context-menu.active + .context-menu-arrow {
+  opacity: 1;
+}
+
+/* Оверлей для закрытия */
+.context-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 999;
+  display: none;
+}
+
+.context-overlay.active {
+  display: block;
+}
+
+/* Стили для стрелок при открытом состоянии */
+.arrow.open {
+  transform: rotate(90deg);
+}

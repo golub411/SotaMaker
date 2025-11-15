@@ -1,0 +1,83 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 3.84vw;
+}
+
+.buttons {
+  display: flex;
+  gap: 3.84vw;
+}
+
+.buttons > div,
+.buttons > a {
+  flex: 1;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10.7vw;
+}
+
+.button.create {
+  background-color: #fbc717;
+  box-shadow: 1px 3px 12px #edcf3630;
+  border-radius: 2.56vw;
+}
+
+.button.demo {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3.84vw;
+  border: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
+  color: inherit;
+}
+
+.button.demo > span {
+  font-size: 3.58vw;
+  color: var(--text-primary);
+}
+
+.button.create > span {
+  font-family: var(--font-family-Unbounded-reg);
+  color: #000000;
+}
+
+.form > input {
+  width: 100%;
+  font-size: 4vw;
+  padding: 4.61vw 3.84vw;
+  border: 1px solid var(--input-border-color);
+  border-radius: 2.56vw;
+  background-color: var(--input-bg);
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+  font-family: var(--font-family-InterTight-reg);
+}
+
+/* Стили для загрузки */
+.button.create.loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.button.create.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5vw;
+  height: 5vw;
+  margin: -2.5vw 0 0 -2.5vw;
+  border: 0.5vw solid transparent;
+  border-top: 0.5vw solid var(--text-primary);
+  border-right: 0.5vw solid var(--text-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}

@@ -1,0 +1,56 @@
+.bot-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.8vw;
+  margin-top: 2.56vw;
+}
+
+.bot-type-block {
+  margin-top: 7.6vw;
+}
+
+.bot-type {
+  background: var(--bg-secondary);
+  display: flex;
+  gap: 1.5vw;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20vw;
+  padding: 1.6vw 4vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bot-type > span {
+  font-family: var(--font-family-InterTight-reg);
+  font-size: 3.7vw;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.bot-type.active {
+  background: var(--accent-color);
+  box-shadow: 1px 1px 12px #edcf3630;
+}
+
+.bot-type.active > span {
+  color: #121212;
+  transition: all 0.3s ease;
+}
+
+.bot-type.disabled {
+  background: var(--bg-secondary-dis);
+}
+
+.bot-type.disabled > span {
+  color: var(--text-dis);
+}
+
+.emoji {
+  width: 3.58vw;
+}
+
+.soon {
+  margin-top: 1px;
+  width: 9.48vw;
+}

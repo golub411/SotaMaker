@@ -1,0 +1,60 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #d0d0d0;
+  --bg-secondary-dis: #d0d0d0;
+  --bg-card: #ffffff;
+  --text-primary: #121212;
+  --text-dis: #535353;
+  --text-primary-inv: #ffffff;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --accent-color: #f5c34e;
+  --accent-hover: #f9d94d;
+  --shadow: 0 0.4vw 1vw rgba(0, 0, 0, 0.1);
+
+  --bg-bottom-block: #f6f6f6;
+  --bg-integration: #ecc73b;
+
+  --arrow-dis: block;
+  --arrow-black-dis: none;
+  --arrow-black-dis-opac: 0;
+  --arrow-dis-opac: 1;
+
+  --border-color: #12121230;
+  --input-border-color: #12121250;
+  --input-bg: #ffffff50;
+
+  --bg-popup: #ffffff98;
+  --bg-switch: rgba(18, 18, 18, 0.048);
+}
+
+/* 🌙 Тёмная тема */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #8c8c8c;
+  --bg-secondary-dis: #303030;
+  --bg-card: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-primary-inv: #121212;
+  --text-secondary: #adb5bd;
+  --text-dis: #979797;
+  --border-color: #2f2f2f;
+  --accent-color: #f5c34e;
+  --accent-hover: #f9d94d;
+  --shadow: 0 0.4vw 1vw rgba(0, 0, 0, 0.5);
+
+  --bg-bottom-block: #1a1a1a;
+  --bg-integration: #ecc73b70;
+
+  --arrow-dis: none;
+  --arrow-black-dis: block;
+  --arrow-black-dis-opac: 1;
+  --arrow-dis-opac: 0;
+
+  --border-color: #ffffff50;
+  --input-border-color: #ffffff50;
+  --input-bg: #ffffff15;
+
+  --bg-popup: #1a1a1a98;
+  --bg-switch: rgba(255, 255, 255, 0.1);
+}
