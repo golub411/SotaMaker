@@ -55,76 +55,183 @@ const INTEGRATIONS = [
   { name: "Subgram", icon: "static/logos/Subgram.JPG" }
 ];
 
-// Генерация HTML для category-intgr
-function generateCategoryIntegrationHTML(category) {
+// Генерация DOM-элемента для category-intgr
+function generateCategoryIntegrationElement(category) {
   const config = CATEGORY_CONFIG[category];
-  if (!config) return '';
+  if (!config) return null;
 
-  return `
-    <div class="category-intgr" data-category="${category}">
-      <div class="category">
-        <div class="category-icon">
-          <img src="${config.icon}" alt="${config.name}" />
-        </div>
-        <div class="category-content">
-          <span style="opacity: 0.5">Категория:</span>
-          <span style="opacity: 0.7">${config.name}</span>
-        </div>
-      </div>
+  const categoryIntgr = document.createElement('div');
+  categoryIntgr.className = 'category-intgr';
+  categoryIntgr.dataset.category = category;
 
-      <div class="integration-container">
-        <div class="integration">
-          <img class="sotsint" src="static/UI/sotsintegration.png" alt="" />
-          <span>Интеграции</span>
-          <div class="arrow-container">
-            <img class="arrow white" src="static/UI/arrowint.svg" alt="" />
-            <img class="arrow black" src="static/UI/arrowintblack.svg" alt="" />
-          </div>
-        </div>
+  // Категория
+  const categoryDiv = document.createElement('div');
+  categoryDiv.className = 'category';
+  
+  const categoryIcon = document.createElement('div');
+  categoryIcon.className = 'category-icon';
+  const iconImg = document.createElement('img');
+  iconImg.src = config.icon;
+  iconImg.alt = config.name;
+  categoryIcon.appendChild(iconImg);
+  
+  const categoryContent = document.createElement('div');
+  categoryContent.className = 'category-content';
+  
+  const categoryLabel = document.createElement('span');
+  categoryLabel.textContent = 'Категория:';
+  categoryLabel.style.opacity = '0.5';
+  
+  const categoryName = document.createElement('span');
+  categoryName.textContent = config.name;
+  categoryName.style.opacity = '0.7';
+  
+  categoryContent.appendChild(categoryLabel);
+  categoryContent.appendChild(categoryName);
+  
+  categoryDiv.appendChild(categoryIcon);
+  categoryDiv.appendChild(categoryContent);
 
-        <div class="integrations-context-menu">
-          ${INTEGRATIONS.map(integration => `
-            <div class="context-menu-item">
-              <div class="context-menu-icon">
-                <img src="${integration.icon}" alt="${integration.name}" />
-              </div>
-              <span>${integration.name}</span>
-            </div>
-          `).join('')}
-        </div>
+  // Контейнер интеграций
+  const integrationContainer = document.createElement('div');
+  integrationContainer.className = 'integration-container';
+  
+  const integration = document.createElement('div');
+  integration.className = 'integration';
+  
+  const sotsIntImg = document.createElement('img');
+  sotsIntImg.className = 'sotsint';
+  sotsIntImg.src = 'static/UI/sotsintegration.png';
+  sotsIntImg.alt = '';
+  
+  const integrationText = document.createElement('span');
+  integrationText.textContent = 'Интеграции';
+  
+  const arrowContainer = document.createElement('div');
+  arrowContainer.className = 'arrow-container';
+  
+  const arrowWhite = document.createElement('img');
+  arrowWhite.className = 'arrow white';
+  arrowWhite.src = 'static/UI/arrowint.svg';
+  arrowWhite.alt = '';
+  
+  const arrowBlack = document.createElement('img');
+  arrowBlack.className = 'arrow black';
+  arrowBlack.src = 'static/UI/arrowintblack.svg';
+  arrowBlack.alt = '';
+  
+  arrowContainer.appendChild(arrowWhite);
+  arrowContainer.appendChild(arrowBlack);
+  
+  integration.appendChild(sotsIntImg);
+  integration.appendChild(integrationText);
+  integration.appendChild(arrowContainer);
 
-        <div class="context-menu-arrow"></div>
-      </div>
-    </div>
-  `;
+  // Контекстное меню интеграций
+  const integrationsContextMenu = document.createElement('div');
+  integrationsContextMenu.className = 'integrations-context-menu';
+  
+  INTEGRATIONS.forEach(integrationItem => {
+    const contextMenuItem = document.createElement('div');
+    contextMenuItem.className = 'context-menu-item';
+    
+    const contextMenuIcon = document.createElement('div');
+    contextMenuIcon.className = 'context-menu-icon';
+    const integrationIcon = document.createElement('img');
+    integrationIcon.src = integrationItem.icon;
+    integrationIcon.alt = integrationItem.name;
+    contextMenuIcon.appendChild(integrationIcon);
+    
+    const integrationNameSpan = document.createElement('span');
+    integrationNameSpan.textContent = integrationItem.name;
+    
+    contextMenuItem.appendChild(contextMenuIcon);
+    contextMenuItem.appendChild(integrationNameSpan);
+    integrationsContextMenu.appendChild(contextMenuItem);
+  });
+
+  const contextMenuArrow = document.createElement('div');
+  contextMenuArrow.className = 'context-menu-arrow';
+
+  integrationContainer.appendChild(integration);
+  integrationContainer.appendChild(integrationsContextMenu);
+  integrationContainer.appendChild(contextMenuArrow);
+
+  categoryIntgr.appendChild(categoryDiv);
+  categoryIntgr.appendChild(integrationContainer);
+
+  return categoryIntgr;
 }
 
-function generateTemplatesHTML() {
-  let html = '';
+function generateTemplatesElements() {
+  const fragment = document.createDocumentFragment();
   
   Object.entries(CATEGORY_CONFIG).forEach(([category, config]) => {
-    html += `
-      <div class="templates-container" data-category="${category}">
-        ${Object.entries(config.templates).map(([templateId, template], index) => `
-          <div class="bottom-main ${index === 0 ? 'active' : ''}" data-template="${templateId}">
-            ${generateCategoryIntegrationHTML(category)}
-            
-            <h1><span>${template.title}</span></h1>
-            <p>${template.description}</p>
-            <div class="form">
-              <input placeholder="Введите токен из бота @BotFather" type="text" />
-              <div class="buttons">
-                <div class="button create"><span>Создать</span></div>
-                <a href="#" class="button demo"><span>Демо-доступ</span></a>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+    const templatesContainer = document.createElement('div');
+    templatesContainer.className = 'templates-container';
+    templatesContainer.dataset.category = category;
+    
+    Object.entries(config.templates).forEach(([templateId, template], index) => {
+      const bottomMain = document.createElement('div');
+      bottomMain.className = `bottom-main ${index === 0 ? 'active' : ''}`;
+      bottomMain.dataset.template = templateId;
+      
+      // Добавляем category-intgr элемент
+      const categoryIntegration = generateCategoryIntegrationElement(category);
+      if (categoryIntegration) {
+        bottomMain.appendChild(categoryIntegration);
+      }
+      
+      // Заголовок
+      const title = document.createElement('h1');
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = template.title;
+      title.appendChild(titleSpan);
+      bottomMain.appendChild(title);
+      
+      // Описание
+      const description = document.createElement('p');
+      // Используем insertAdjacentHTML для сохранения HTML-тегов в описании
+      description.insertAdjacentHTML('beforeend', template.description);
+      bottomMain.appendChild(description);
+      
+      // Форма
+      const form = document.createElement('div');
+      form.className = 'form';
+      
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Введите токен из бота @BotFather';
+      form.appendChild(input);
+      
+      const buttons = document.createElement('div');
+      buttons.className = 'buttons';
+      
+      const createButton = document.createElement('div');
+      createButton.className = 'button create';
+      const createSpan = document.createElement('span');
+      createSpan.textContent = 'Создать';
+      createButton.appendChild(createSpan);
+      
+      const demoLink = document.createElement('a');
+      demoLink.href = '#';
+      demoLink.className = 'button demo';
+      const demoSpan = document.createElement('span');
+      demoSpan.textContent = 'Демо-доступ';
+      demoLink.appendChild(demoSpan);
+      
+      buttons.appendChild(createButton);
+      buttons.appendChild(demoLink);
+      form.appendChild(buttons);
+      
+      bottomMain.appendChild(form);
+      templatesContainer.appendChild(bottomMain);
+    });
+    
+    fragment.appendChild(templatesContainer);
   });
   
-  return html;
+  return fragment;
 }
 
 // Функция создания бота
@@ -383,15 +490,18 @@ function waitForElement(selector, timeout = 5000) {
     }, timeout);
   });
 }
+
 // Основная функция инициализации приложения
 async function initApp() {
   // Генерируем все шаблоны из конфига
   const bottomBlock = await waitForElement('.bottom-block');
   if (bottomBlock) {
-    const templatesHTML = generateTemplatesHTML();
-    // Заменяем innerHTML на insertAdjacentHTML
-    bottomBlock.innerHTML = ''; // Сначала очищаем
-    bottomBlock.insertAdjacentHTML('beforeend', templatesHTML);
+    const templatesFragment = generateTemplatesElements();
+    // Очищаем и добавляем элементы безопасно
+    while (bottomBlock.firstChild) {
+      bottomBlock.removeChild(bottomBlock.firstChild);
+    }
+    bottomBlock.appendChild(templatesFragment);
   }
 
   // Инициализация выбора типа бота
