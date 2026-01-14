@@ -10,20 +10,16 @@ from telegram.ext import (
     CallbackQueryHandler,
 )
 from aiohttp import web
-import asyncio
 import json
+import asyncio
 
-from config import BOT_TOKEN, WEB_HOST, WEB_PORT, WEBHOOK_URL
+from config import BOT_TOKEN, WEB_HOST, WEB_PORT, DOMAIN
 
 # Настройка логирования
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
-
-# Глобальные переменные для HTTP сервера
-http_app = web.Application()
-routes = web.RouteTableDef()
 
 
 class TelegramBot:
@@ -52,8 +48,7 @@ class TelegramBot:
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "📱 Открыть Mini App",
-                    web_app={"url": f"http://{WEB_HOST}:{WEB_PORT}/webapp/"},
+                    "📱 Открыть SotaMaker", web_app={"url": f"https://{DOMAIN}/webapp/"}
                 )
             ],
             [
@@ -79,15 +74,10 @@ class TelegramBot:
 /menu - Показать меню
 /help - Получить помощь
 
-📱 *Mini App функции:*
+📱 *SotaMaker Mini App:*
 - Открыть мини-приложение
 - Получить данные пользователя
 - Взаимодействовать с ботом
-
-⚡ *Бот умеет:*
-- Отвечать на сообщения
-- Работать с мини-приложением
-- Показывать различные меню
         """
         await update.message.reply_text(help_text, parse_mode="Markdown")
 
@@ -141,19 +131,36 @@ class TelegramBot:
             keyboard = [
                 [
                     InlineKeyboardButton(
-                        "📱 Открыть Mini App",
-                        web_app={"url": f"http://{WEB_HOST}:{WEB_PORT}/webapp/"},
+                        "📱 Открыть SotaMaker",
+                        web_app={"url": f"https://{DOMAIN}/webapp/"},
                     )
                 ]
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             await query.edit_message_text(
-                text="🌐 *Mini App:*\n\nНажмите кнопку ниже чтобы открыть мини-приложение:",
+                text="🌐 *SotaMaker Mini App:*\n\nНажмите кнопку ниже чтобы открыть мини-приложение:",
                 reply_markup=reply_markup,
                 parse_mode="Markdown",
             )
         elif data == "back":
-            await self.start_command(update, context)
+            # Вместо вызова start_command, просто отправляем новое сообщение
+            keyboard = [
+                [
+                    InlineKeyboardButton(
+                        "📱 Открыть SotaMaker",
+                        web_app={"url": f"https://{DOMAIN}/webapp/"},
+                    )
+                ],
+                [
+                    InlineKeyboardButton("ℹ️ Помощь", callback_data="help"),
+                    InlineKeyboardButton("⚙️ Настройки", callback_data="settings"),
+                ],
+                [InlineKeyboardButton("👤 Профиль", callback_data="profile")],
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await query.edit_message_text(
+                text=f"Привет {user.first_name}! 👋", reply_markup=reply_markup
+            )
         else:
             await query.edit_message_text(
                 text=f"Вы выбрали: {data}", parse_mode="Markdown"
@@ -163,20 +170,24 @@ class TelegramBot:
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
     ) -> None:
         """Обработка данных из мини-приложения"""
-        data = json.loads(update.message.web_app_data.data)
-        user_id = data.get("user_id")
-        action = data.get("action")
+        try:
+            data = json.loads(update.message.web_app_data.data)
+            user_id = data.get("user_id")
+            action = data.get("action")
 
-        response_text = f"""
-✅ *Данные получены из Mini App!*
+            response_text = f"""
+✅ *Данные получены из SotaMaker!*
 
 👤 User ID: `{user_id}`
 📝 Action: `{action}`
 ⏰ Time: `{data.get('timestamp')}`
 📦 Text: `{data.get('text', 'Нет текста')}`
-        """
+            """
 
-        await update.message.reply_text(response_text, parse_mode="Markdown")
+            await update.message.reply_text(response_text, parse_mode="Markdown")
+        except Exception as e:
+            logger.error(f"Error handling web app data: {e}")
+            await update.message.reply_text("❌ Ошибка обработки данных")
 
     async def echo_message(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -187,39 +198,17 @@ class TelegramBot:
             f"🔁 Вы сказали: {user_text}\n\nИспользуйте /menu для навигации"
         )
 
-    async def run_http_server(self):
-        """Запуск HTTP сервера для статики"""
-        # Добавляем статические файлы
-        http_app.router.add_static("/webapp/", path="./webapp/", show_index=True)
-        http_app.router.add_get("/", self.handle_root)
-
-        runner = web.AppRunner(http_app)
-        await runner.setup()
-        site = web.TCPSite(runner, WEB_HOST, WEB_PORT)
-        await site.start()
-        logger.info(f"HTTP сервер запущен на http://{WEB_HOST}:{WEB_PORT}")
-
-    async def handle_root(self, request):
-        """Обработчик корневого пути"""
-        return web.Response(
-            text="🤖 Telegram Bot is running!\n\n📱 Mini App доступен по пути: /webapp/"
-        )
-
-    async def run(self):
-        """Запуск бота и HTTP сервера"""
-        # Запускаем HTTP сервер в фоне
-        asyncio.create_task(self.run_http_server())
-
-        # Запускаем бота
+    def run(self):
+        """Запуск бота - синхронная версия"""
         logger.info("Бот запускается...")
-        await self.application.run_polling()
+        self.application.run_polling()
 
 
-async def main():
+def main():
     """Основная функция"""
     bot = TelegramBot()
-    await bot.run()
+    bot.run()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

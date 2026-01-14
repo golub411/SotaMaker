@@ -1,0 +1,63 @@
+/* ========================= */
+/* 🌗 Переключатель темы */
+/* ========================= */
+.theme-switch {
+  width: 14vw;
+  height: 7vw;
+  background: var(--bg-switch);
+  border-radius: 20vw;
+  border: 0.4vw solid #000000;
+  position: absolute;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  top: 2.6vw;
+  right: 3vw;
+  display: flex;
+  align-items: center;
+  padding: 0.8vw;
+  cursor: pointer;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.switch-circle {
+  width: 5.5vw;
+  height: 5.5vw;
+  background: #f5c34e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+  width: 3vw;
+  height: 3vw;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sun {
+  opacity: 1;
+}
+.moon {
+  opacity: 0;
+}
+
+[data-theme="dark"] .theme-switch {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .switch-circle {
+  transform: translateX(6.8vw);
+  background: #f5c34e;
+}
+
+[data-theme="dark"] .sun {
+  opacity: 0;
+}
+[data-theme="dark"] .moon {
+  opacity: 1;
+}

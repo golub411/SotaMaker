@@ -3,38 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telegram Mini App</title>
+    <title>SotaMaker 2.0</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Подключаем Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1>🤖 Моё Mini App</h1>
-        <p>Простое мини-приложение для бота</p>
-      </div>
+  <body data-bot-type="stars">
+    <div class="layout">
+      <div class="container">
+        <img class="bg-image light-bg" src="static/images/sots.png" alt="" />
+        <img class="bg-image dark-bg" src="static/images/darksots.png" alt="" />
 
-      <div class="user-card">
-        <h3>👤 Данные пользователя:</h3>
-        <div id="user-data">Загрузка...</div>
-      </div>
+        <div class="theme-switch" id="themeSwitch">
+          <div class="switch-circle">
+            <svg
+              class="icon sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="5" fill="white" />
+              <g stroke="white" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="4" />
+                <line x1="12" y1="20" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="4" y2="12" />
+                <line x1="20" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
+              </g>
+            </svg>
+            <svg
+              class="icon moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="black"
+                stroke-width="2"
+                d="M21 12.79A9 9 0 0111.21 3 7 7 0 1012 21a9 9 0 009-8.21z"
+              />
+            </svg>
+          </div>
+        </div>
 
-      <div class="actions">
-        <button class="btn primary" onclick="sendMessage()">
-          📨 Отправить сообщение
-        </button>
-        <button class="btn" onclick="showAlert()">ℹ️ Показать alert</button>
-        <button class="btn secondary" onclick="closeApp()">
-          ❌ Закрыть приложение
-        </button>
-      </div>
+        <div class="top-content">
+          <div class="header">
+            <div class="logo-conteiner">
+              <img class="bee" src="static/images/bee.svg" alt="" />
+              <span>SotaMaker</span>
+              <div class="version">
+                <span>2.0</span>
+                <img src="static/images/bee.svg" alt="" />
+              </div>
+            </div>
+            <p class="main-desc">
+              Создай <span class="low-opacity">своего</span> бота и
+              <span class="low-opacity">начни</span><br />
+              зарабатывать <span class="low-opacity">уже</span> сегодня
+            </p>
+          </div>
 
-      <div class="debug">
-        <h4>🐛 Debug информация:</h4>
-        <div id="debug-data"></div>
+          <!-- 🧩 ВЫБОР ТИПА БОТА -->
+          <div class="bot-type-block">
+            <span class="choose">Выберите тип бота:</span>
+            <div class="bot-types">
+              <div class="bot-type active" data-bot-type="stars">
+                <img class="emoji" src="static/emoji/star.png" alt="" />
+                <span> Звёзды и NFT️ </span>
+              </div>
+              <div class="bot-type" data-bot-type="movies">
+                <img class="emoji" src="static/emoji/cinema.png" alt="" />
+                <span>Кино и Фильмы</span>
+              </div>
+              <div class="bot-type disabled" data-bot-type="shops">
+                <img class="emoji" src="static/emoji/basket.png" alt="" />
+                <span>Магазины</span>
+                <img class="soon" src="static/UI/soon.png" alt="" />
+              </div>
+              <div class="bot-type disabled" data-bot-type="games">
+                <img class="emoji" src="static/emoji/dolor.png" alt="" />
+                <span>Игровые</span>
+                <img class="soon" src="static/UI/soon.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-block"></div>
+
+        <!-- Оверлей для закрытия меню -->
+        <div class="context-overlay" id="contextOverlay"></div>
       </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <script>
+      // Инициализация Telegram Web App
+      document.addEventListener("DOMContentLoaded", function () {
+        if (window.Telegram && window.Telegram.WebApp) {
+          const tg = window.Telegram.WebApp;
+          tg.expand();
+          tg.disableVerticalSwipes();
+          tg.setHeaderColor("#FBC717");
+          tg.setBackgroundColor("#FBC717");
+          tg.ready();
+          console.log("Telegram Web App инициализирован");
+        }
+      });
+    </script>
+    <script src="/webapp/js/app.js"></script>
+    <script src="/webapp/js/store.js"></script>
   </body>
 </html>

@@ -1,0 +1,71 @@
+/* ========================= */
+/* 🐝 Заголовок и логотип */
+/* ========================= */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  gap: 5vw;
+  margin-top: 10vw;
+}
+
+.logo-conteiner {
+  position: relative;
+}
+
+.logo-conteiner > span {
+  font-family: var(--font-family-Unbounded);
+  font-size: 10.5vw;
+}
+
+.bee {
+  width: 4.5vw;
+  transform: rotate(55deg);
+  position: absolute;
+  top: 4vw;
+  left: 9vw;
+  user-select: none;
+  pointer-events: none;
+}
+
+.version {
+  position: absolute;
+  width: 21vw;
+  height: 7vw;
+  background-color: #f5c34e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2.5vw;
+  transform: rotate(-3deg);
+  right: -2vw;
+  bottom: -2.5vw;
+}
+
+.version > span {
+  color: #ffffff;
+  font-size: 4.5vw;
+  font-family: var(--font-family-Unbounded-reg);
+}
+
+.version > img {
+  position: absolute;
+  bottom: -1vw;
+  right: -1vw;
+  width: 4vw;
+  transform: rotate(-45deg);
+}
+
+.main-desc {
+  font-size: 5vw;
+  color: var(--text-primary);
+  text-align: center;
+  font-family: var(--font-family-InterTight-reg);
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+.low-opacity {
+  opacity: 0.5;
+}
